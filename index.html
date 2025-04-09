@@ -248,6 +248,32 @@
             cursor: pointer;
         }
 
+        @media (max-width: 480px) {
+            .share-popup {
+                width: 100%;
+                border-radius: 16px 16px 0 0;
+                padding: 16px;
+            }
+
+            .popup-header {
+                font-size: 16px;
+            }
+
+            .share-item {
+                min-width: 56px;
+            }
+
+            .icon {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+        }
+
+        .share-popup {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+
         .share-link {
             display: flex;
             align-items: center;
@@ -353,11 +379,6 @@
             document.getElementById("shareOverlay").style.display = "flex";
             // 팝업 열리면 재생하고 있는 동영상 정지
             document.querySelectorAll("video").forEach(video => video.pause());
-            // // 스크롤 방지
-            // document.body.style.overflow = "hidden";
-            // // 휠, 터치 막기
-            // window.addEventListener('wheel', preventScroll, { passive: false });
-            // window.addEventListener('touchmove', preventScroll, { passive: false });
         }
 
         function closePopup() {
@@ -367,17 +388,7 @@
             if (activeSlide) {
                 activeSlide.play();
             }
-            // // 스크롤 다시 허용
-            // document.body.style.overflow = "";
-            // // 이벤트 제거
-            // window.removeEventListener('wheel', preventScroll);
-            // window.removeEventListener('touchmove', preventScroll);
-
         }
-
-        // function preventScroll(e) {
-        //     e.preventDefault();
-        // }
 
         function copyLink() {
             const input = document.getElementById("shareUrl");
