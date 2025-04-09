@@ -183,6 +183,93 @@
         .plyr video {
             object-fit: contain !important;
         }
+
+        .overlay {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .share-popup {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .share-options {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 0;
+            gap: 16px;
+        }
+
+        .share-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            color: white;
+            font-size: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 6px;
+            cursor: pointer;
+        }
+
+        .share-link {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+            gap: 10px;
+        }
+
+        .share-link input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .share-link button {
+            background: #0052cc;
+            color: white;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -193,9 +280,28 @@
         </div>
     </div>
 
+    <!-- 공유 팝업 모달 -->
+    <div id="shareOverlay" class="overlay" style="display: none;">
+        <div class="share-popup">
+            <div class="popup-header">
+                <span>공유</span>
+                <button class="close-btn" onclick="closePopup()">×</button>
+            </div>
+
+            <div class="share-options" id="shareOptions">
+                <!-- 버튼들이 JavaScript로 생성됨 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 외부 SDK -->
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/plyr/dist/plyr.min.js"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+
     <script>
+        Kakao.init('76533188d481d2576e1330c0e59156b6');
+
         const videos = [
             {
                 src: "https://prod-usp-logs.s3.ap-northeast-2.amazonaws.com/test_media/video1.mp4",
@@ -229,8 +335,92 @@
             }
         ];
 
-        const wrapper = document.getElementById("swiper-wrapper");
+        const shareItems = [
+            { name: "퍼가기", icon: "fas fa-share", bgColor: "#eee" },
+            { name: "WhatsApp", icon: "fab fa-whatsapp", bgColor: "#25D366" },
+            { name: "Facebook", icon: "fab fa-facebook-f", bgColor: "#3b5998" },
+            { name: "Twitter", icon: "fab fa-twitter", bgColor: "#1da1f2" },
+            { name: "이메일", icon: "fas fa-envelope", bgColor: "#999" },
+            { name: "카카오톡", icon: "fas fa-comment", bgColor: "#FEE500" },
+        ];
 
+        // 공유 옵션 동적으로 렌더링
+        const shareOptionsContainer = document.getElementById("shareOptions");
+        const wrapper = document.getElementById("swiper-wrapper");
+        let currentIndex = 0;
+
+        function openPopup() {
+            document.getElementById("shareOverlay").style.display = "flex";
+            // 팝업 열리면 재생하고 있는 동영상 정지
+            document.querySelectorAll("video").forEach(video => video.pause());
+            // // 스크롤 방지
+            // document.body.style.overflow = "hidden";
+            // // 휠, 터치 막기
+            // window.addEventListener('wheel', preventScroll, { passive: false });
+            // window.addEventListener('touchmove', preventScroll, { passive: false });
+        }
+
+        function closePopup() {
+            document.getElementById("shareOverlay").style.display = "none";
+            // 팝업 닫히면 현재 슬라이드 동영상 다시 재생
+            let activeSlide = document.querySelector(".swiper-slide-active video");
+            if (activeSlide) {
+                activeSlide.play();
+            }
+            // // 스크롤 다시 허용
+            // document.body.style.overflow = "";
+            // // 이벤트 제거
+            // window.removeEventListener('wheel', preventScroll);
+            // window.removeEventListener('touchmove', preventScroll);
+
+        }
+
+        // function preventScroll(e) {
+        //     e.preventDefault();
+        // }
+
+        function copyLink() {
+            const input = document.getElementById("shareUrl");
+            input.select();
+            input.setSelectionRange(0, 99999); // 모바일 대응
+            document.execCommand("copy");
+            alert("링크가 복사되었습니다!");
+        }
+
+        function updateShareLink() {
+            const input = document.getElementById("shareUrl");
+            if (input) {
+                input.value = videos[currentIndex].src;
+            }
+        }
+
+        shareItems.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "share-item";
+            div.innerHTML = `
+                <div class="icon" style="background-color: ${item.bgColor};">
+                    <i class="${item.icon}"></i>
+                </div>
+                <span>${item.name}</span>
+            `;
+
+            // 아이콘 클릭 이벤트 추가
+            div.querySelector(".icon").addEventListener("click", () => {
+                handleShareAction(item.name);
+            });
+
+            shareOptionsContainer.appendChild(div);
+        });
+
+        // 공유 링크 input 영역은 별도로 share-popup 하단에 추가
+        const sharePopup = document.querySelector(".share-popup");
+        const shareLinkDiv = document.createElement("div");
+        shareLinkDiv.className = "share-link";
+        shareLinkDiv.innerHTML = `
+            <input type="text" id="shareUrl" readonly value="${videos[currentIndex].src}" />
+            <button onclick="copyLink()">복사</button>
+        `;
+        sharePopup.appendChild(shareLinkDiv);
         videos.forEach((video, index) => {
             const slide = document.createElement("div");
             slide.classList.add("swiper-slide");
@@ -275,9 +465,52 @@
             alert(`해시태그 "${tag}" 클릭됨!`);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            let currentIndex = 0;
+        function handleShareAction(platform) {
+            const videoUrl = videos[currentIndex].src;
+            const title = videos[currentIndex].title;
+            const hashtags = videos[currentIndex].hashtags;
 
+            const url = encodeURIComponent("https://kihokkang.github.io/shortsPlayer/");
+            let shareUrl = "";
+
+            switch (platform) {
+                case "WhatsApp":
+                    shareUrl = `https://api.whatsapp.com/send?text=${url}`;
+                    break;
+                case "Facebook":
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                    break;
+                case "Twitter":
+                    shareUrl = `https://twitter.com/intent/tweet?url=${url}`;
+                    break;
+                case "이메일":
+                    shareUrl = `mailto:?subject=공유&body=${url}`;
+                    break;
+                case "카카오톡":
+                    Kakao.Link.sendDefault({
+                        objectType: "feed",
+                        content: {
+                            title: title, // 공유될 제목
+                            description: "동영상에 대한 설명글이 필요해", // 공유될 설명
+                            imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2Dy3jDxsWMYdkSsE5tKprkkqvePuvDDhfKQ&s", // 공유될 이미지 url
+                            link: {
+                                mobileWebUrl: videoUrl, // 공유될 모바일 URL
+                                webUrl: videoUrl, // 공유될 웹 URL
+                            },
+                        },
+                    });
+                    break;
+                case "퍼가기":
+                    copyLink(); // 기존 복사함수 재사용
+                    return;
+                default:
+                    console.log("Unknown platform:", platform);
+                    return;
+            }
+
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
             function updateButtons() {
                 document.querySelectorAll(".swiper-slide").forEach((slide, index) => {
                     const likeButton = slide.querySelector(".like-button");
@@ -317,13 +550,7 @@
                     alert("리뷰 기능은 곧 추가될 예정입니다!");
                 }
                 else if (event.target.closest(".share-button")) {
-                    const index = event.target.closest(".share-button").dataset.index;
-                    const videoUrl = videos[index].src;
-                    navigator.clipboard.writeText(videoUrl).then(() => {
-                        alert("영상 링크가 클립보드에 복사되었습니다!");
-                    }).catch(err => {
-                        console.error("복사 실패:", err);
-                    });
+                    openPopup();
                 }
             });
 
@@ -345,6 +572,7 @@
                         // let activeIndex = this.activeIndex;
                         currentIndex = this.activeIndex;
                         let totalSlides = videos.length;
+                        updateShareLink();
 
                         // 모든 비디오 일시 정지
                         document.querySelectorAll("video").forEach(video => video.pause());
@@ -369,6 +597,14 @@
             // 마우스 휠 이벤트 추가 (배경 포함 모든 영역에서 동작)
             let isScrolling = false;
             document.addEventListener("wheel", (event) => {
+                const sharePopup = document.getElementById("shareOverlay");
+                const isPopupOpen = sharePopup && sharePopup.style.display === "flex";
+
+                if (isPopupOpen) {
+                    event.preventDefault(); // 팝업 열려있을 땐 휠 막기
+                    return;
+                }
+
                 if (isScrolling) return; // 연속 휠 스크롤 방지
                 isScrolling = true;
                 setTimeout(() => isScrolling = false, 400); // 0.4초 동안 추가 스크롤 방지
