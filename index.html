@@ -7,6 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- 모피어스 챗봇 스타일 적용 -->
+    <link rel="stylesheet" href="css/morpheus-style.css" />
     <style>
         body {
             display: flex;
@@ -296,6 +299,241 @@
             border-radius: 6px;
             cursor: pointer;
         }
+
+        #review-modal {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+            overflow: hidden;
+            z-index: 10;
+            /* shorts 위에 뜨게 */
+        }
+
+        #review-modal.show {
+            transform: translateY(0);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .modal-content {
+            padding: 20px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 40px;
+            padding: 0 10px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Chatbot Styles */
+        .chatbot-pop {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .chatbot-wrap {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 500px;
+            height: 600px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            flex-direction: column;
+            transition: transform 0.3s ease-out;
+            transform: translateY(100%);
+        }
+
+        .chatbot-wrap.show-popup {
+            transform: translateY(0);
+        }
+
+        .chatbot-header {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+        }
+
+        .chatbot-close:hover {
+            color: #333;
+        }
+
+        .chatbot-content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .by-date {
+            margin-bottom: 20px;
+        }
+
+        .date {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .my {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            max-width: 80%;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+
+        .input-box {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .type {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+            height: 40px;
+        }
+
+        .btn-add {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-stop {
+            background: #dc3545;
+        }
+
+        .btn-chatbot {
+            width: 50px;
+            height: 50px;
+            background: #007bff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            margin: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: height 0.3s ease;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            z-index: 1001;
+        }
+
+        .btn-chatbot.active {
+            background: #0056b3;
+            height: 0;
+            margin: 0;
+        }
+
+        .btn-chat-more {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .resizer {
+            width: 10px;
+            height: 10px;
+            background: #007bff;
+            position: absolute;
+            right: -5px;
+            top: -5px;
+            cursor: nwse-resize;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .chatbot-wrap.resizing .resizer {
+            opacity: 1;
+            pointer-events: auto;
+        }
     </style>
 </head>
 
@@ -303,6 +541,35 @@
     <div id="shorts-container">
         <div class="swiper">
             <div class="swiper-wrapper" id="swiper-wrapper"></div>
+        </div>
+
+        <!-- chatbot 영역 -->
+        <div class="chatbot-pop">
+            <div class="chatbot-wrap" id="chatbotWrap">
+                <div class="chatbot-header">
+                    <h3 class="chatbot-title">Uracle</h3>
+                    <button class="chatbot-close" onclick="closeChatbot()">×</button>
+                </div>
+                <div class="chatbot-content">
+                    <div class="content scrollBox">
+                        <div class="by-date" id="startByDate">
+                            <div class="date" id="chatbotToday"></div>
+                            <div class="data-sources"></div>
+                            <div class="answer" dir="ltr">
+                                <code>안녕하세요!
+                                    저는 유라클의 대화형 챗봇, Athena 입니다.
+                                    유라클에 대해 궁금한 점은 언제든 물어보세요!    
+                                </code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <textarea class="type" placeholder="메세지를 입력하세요!" id="txt" onkeypress="question(event)" oninput="chatbotInputEvent()"></textarea>
+                    <button class="btn-add" id="btnSend" disabled onclick="chatbotSendEvent()"></button>
+                </div>
+            </div>
+            <a href="#" class="btn-chatbot ai" id="btnChatbot"></a>
         </div>
     </div>
 
@@ -324,6 +591,9 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/plyr/dist/plyr.min.js"></script>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.6.0/styles/intellij-light.min.css">
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script>
 
     <script>
         Kakao.init('76533188d481d2576e1330c0e59156b6');
@@ -405,6 +675,10 @@
             }
         }
 
+        function closeReviewModal() {
+            document.getElementById('review-modal').classList.remove('show');
+        }
+
         shareItems.forEach(item => {
             const div = document.createElement("div");
             div.className = "share-item";
@@ -459,8 +733,8 @@
                         <div class="control-text">싫어요</div>
                     </div>
                     <div class="control-icon review-button" data-index="${index}">
-                        <i class="fas fa-star"></i>
-                        <div class="control-text">리뷰</div>
+                        <i class="fas fa-robot"></i>
+                        <div class="control-text">Chatbot</div>
                     </div>
                     <div class="control-icon share-button" data-index="${index}">
                         <i class="fas fa-share-alt"></i>
@@ -549,6 +823,7 @@
                     videos[index].disliked = false;
                     updateButtons();
                 }
+
                 else if (event.target.closest(".dislike-button")) {
                     const index = event.target.closest(".dislike-button").dataset.index;
                     videos[index].disliked = !videos[index].disliked;
@@ -556,9 +831,29 @@
                     updateButtons();
                 }
                 else if (event.target.closest(".review-button")) {
-                    const index = event.target.closest(".review-button").dataset.index;
-                    console.log(`"${videos[index].title}"에 대한 리뷰 작성`);
-                    alert("리뷰 기능은 곧 추가될 예정입니다!");
+                    const chatbotWrap = document.querySelector(".chatbot-wrap");
+                    const btnChatbot = document.querySelector(".btn-chatbot");
+                    
+                    if (chatbotWrap.classList.contains("show-popup")) {
+                        stop = true;
+                        chatbotAnswerFlag = false;
+                        document.getElementById("txt").value = "";
+                        document.getElementById("btnSend").disabled = true;
+                        document.getElementById("btnSend").className = "btn-add";
+                        chatbotWrap.classList.remove("show-popup");
+                        document.body.style.overflow = "";
+                        setTimeout(() => {
+                            chatbotWrap.style.display = "none";
+                            btnChatbot.classList.remove("active");
+                        }, 300);
+                    } else {
+                        chatbotWrap.style.display = "flex";
+                        document.body.style.overflow = "hidden";
+                        setTimeout(() => {
+                            chatbotWrap.classList.add("show-popup");
+                            btnChatbot.classList.add("active");
+                        }, 10);
+                    }
                 }
                 else if (event.target.closest(".share-button")) {
                     openPopup();
@@ -636,6 +931,721 @@
             // 초기 버튼 상태 설정
             updateButtons();
         });
+
+        const MAX_RETRIES = 3;          // 최대 재시도 횟수
+        let connectRetry = 0;
+        let sessionId = "";             // 세션 id
+        let originQuery = "";           // 더보기
+        let stop = false;
+        let lastReceivedData = [];      // 더보기를 위한 마지막 데이터 저장
+        let chatbotAnswerFlag = false;  // 현재 답변이 출력중인지 확인 플래그
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const chatbotWrap = document.querySelector(".chatbot-wrap");
+            const btnChatbot = document.querySelector(".btn-chatbot");
+            let isResizing = false;
+            let newWidth = chatbotWrap.offsetWidth; // 초기 너비 값 설정
+            let resizeRequest; // requestAnimationFrame ID
+
+            let today = new Date();
+            document.getElementById("chatbotToday").innerHTML = formatDate(today);
+            document.getElementById("startByDate").dataset.date = (today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate());
+
+            // Toggle chatbot visibility
+            btnChatbot.addEventListener("click", function (e) {
+                e.preventDefault();
+                if (chatbotWrap.classList.contains("show-popup")) {
+                    stop = true;
+                    chatbotAnswerFlag = false;
+                    document.getElementById("txt").value = "";
+                    document.getElementById("btnSend").disabled = true;
+                    document.getElementById("btnSend").className = "btn-add";
+                    chatbotWrap.classList.remove("show-popup");
+                    document.body.style.overflow = "";
+                    setTimeout(() => {
+                        chatbotWrap.style.display = "none";
+                        btnChatbot.classList.remove("active");
+                    }, 300);
+                } else {
+                    chatbotWrap.style.display = "flex";
+                    document.body.style.overflow = "hidden";
+                    setTimeout(() => {
+                        chatbotWrap.classList.add("show-popup");
+                        btnChatbot.classList.add("active");
+                    }, 10);
+                }
+            });
+
+            // Resizing logic
+            const resizer = document.createElement("div");
+            resizer.classList.add("resizer");
+            chatbotWrap.appendChild(resizer);
+
+            resizer.addEventListener("mousedown", (e) => {
+                isResizing = true;
+                chatbotWrap.classList.add("resizing");
+                document.body.style.userSelect = "none";
+                document.addEventListener("mousemove", onMouseMove);
+                document.addEventListener("mouseup", stopResizing);
+            });
+
+            function onMouseMove(e) {
+                if (isResizing) {
+                    newWidth = window.innerWidth - e.clientX - 20;
+                    if (newWidth >= 500 && newWidth <= 1000) {
+                        if (!resizeRequest) {
+                            resizeRequest = requestAnimationFrame(resizePopup);
+                        }
+                    }
+                }
+            }
+
+            function resizePopup() {
+                chatbotWrap.style.width = `${newWidth}px`;
+                resizeRequest = null;
+            }
+
+            function stopResizing() {
+                isResizing = false;
+                chatbotWrap.classList.remove("resizing");
+                document.body.style.userSelect = "";
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", stopResizing);
+                if (resizeRequest) {
+                    cancelAnimationFrame(resizeRequest);
+                    resizeRequest = null;
+                }
+            }
+        });
+
+        // 보내기버튼 활성화 비활성화 함수
+        function chatbotInputEvent() {
+            const txt = document.getElementById("txt");
+            const btn = document.getElementById("btnSend");
+
+            if (chatbotAnswerFlag) {
+                btn.className = "btn-stop";
+                btn.disabled = false;
+            } else {
+                if (txt.value.trim() === '') {
+                    btn.className = "btn-add";
+                    btn.disabled = true;
+                } else {
+                    btn.className = "btn-add";
+                    btn.disabled = false;
+                }
+            }
+        }
+
+        // 보내기 버튼 이벤트 함수
+        function chatbotSendEvent() {
+            const btnThis = document.getElementById("btnSend");
+
+            if (btnThis.classList.contains("disabled")) {
+                return;
+            }
+
+            if (btnThis.className === "btn-add") {
+                btnThis.classList.add("disabled");
+                sendMessageUi();
+                setTimeout(() => {
+                    btnThis.classList.remove("disabled");
+                }, 1000);
+            }
+        }
+
+        // 메시지 전송시 화면 그리기
+        function sendMessageUi() {
+            const txt = document.getElementById("txt");
+            let myDiv = document.createElement("div");
+            let question = document.createElement("div");
+            let chatBox = document.getElementsByClassName("by-date")[document.getElementsByClassName("by-date").length - 1];
+            let scrollBox = document.getElementsByClassName("scrollBox")[0];
+            let today = new Date();
+            let strToday = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+
+            myDiv.className = "my";
+            question.className = "question";
+            question.innerHTML = txt.value.replace(/\n/g, '<br>');
+            if (chatBox != undefined) {
+                if (chatBox.dataset.date == strToday) {
+                    chatBox.append(myDiv);
+                    chatBox.append(question);
+                } else {
+                    let divToday = document.createElement("div");
+                    divToday.className = "by-date";
+                    divToday.dataset.date = strToday;
+                    let divDate = document.createElement("div");
+                    divDate.className = "date";
+                    divDate.innerHTML = formatDate(today);
+                    scrollBox.append(divToday);
+
+                    divToday.append(divDate);
+                    divToday.append(myDiv);
+                    divToday.append(question);
+                }
+            } else {
+                let divToday = document.createElement("div");
+                divToday.className = "by-date";
+                divToday.dataset.date = strToday;
+                let divDate = document.createElement("div");
+                divDate.className = "date";
+                divDate.innerHTML = formatDate(today);
+                scrollBox.append(divToday);
+
+                divToday.append(divDate);
+                divToday.append(myDiv);
+                divToday.append(question);
+            }
+
+            lastReceivedData = [];
+            originQuery = txt.value;
+            getChatbotAnswer(txt.value, false);
+            scrollBox.scrollTop = scrollBox.scrollHeight;
+            txt.value = "";
+        }
+
+        // textarea 엔터 이벤트 처리
+        function question(e) {
+            const txt = document.getElementById('txt');
+            const code = e.code || e.key;
+
+            if (code === 'Enter' || code === 'NumpadEnter') {
+                if (!e.shiftKey && !isMobile()) {
+                    e.preventDefault();
+                    if (txt.value.trim() !== '' && !chatbotAnswerFlag) {
+                        sendMessageUi();
+                        txt.value = '';
+                    }
+                } else if (e.shiftKey || isMobile()) {
+                    const cursorPos = txt.selectionStart;
+                    const textBefore = txt.value.substring(0, cursorPos);
+                    const textAfter = txt.value.substring(cursorPos);
+
+                    e.preventDefault();
+                    txt.value = `${textBefore}\n${textAfter}`;
+                    txt.selectionStart = txt.selectionEnd = cursorPos + 1;
+
+                    setTimeout(() => {
+                        txt.scrollTop = txt.scrollHeight;
+                    }, 0);
+                }
+            }
+        }
+
+        // 날짜 요일 변환함수
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+            const dayOfWeek = daysOfWeek[date.getDay()];
+            return `${year}.${month}.${day}(${dayOfWeek})`;
+        }
+
+        // 챗봇 시작
+        function chatbotStart() {
+            return new Promise((resolve, reject) => {
+                const url = 'https://athena.uracle.co.kr:19001/uracle/start';
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'secret': atob('MDU4N2M4NTIwNjZkMjc2ZmYzN2I1YTRkMjI2YjFhMWU=')
+                    })
+                })
+                    .then(response => response.json())
+                    .then(({ session_id }) => resolve(session_id))
+                    .catch(error => {
+                        reject(error)
+                    })
+            })
+        }
+
+        function getChatbotAnswer(txtValue, seeMore) {
+            Promise.resolve()
+                .then(() => {
+                    if (sessionId) {
+                        return Promise.resolve(sessionId)
+                    } else {
+                        return chatbotStart();
+                    }
+                })
+                .then((_sessionId) => {
+                    sessionId = _sessionId;
+                    if (connectRetry < MAX_RETRIES) {
+                        sendMessage(txtValue, seeMore);
+                    }
+                })
+        }
+
+        // 챗봇 메시지 전달
+        async function sendMessage(txt, seeMore) {
+            console.log('sendMessage', txt);
+            lastReceivedData.push('');
+            stop = false;
+            const keywordText = replaceKeywords(txt)
+            const sendText = replaceYearWords(keywordText);
+            const selectedKeyword = getSelectedKeyword();
+
+            let dataSources = document.createElement("div");
+            let divAnswer = document.createElement("div");
+            let chatBox = document.getElementsByClassName("by-date")[document.getElementsByClassName("by-date").length - 1];
+            let scrollBox = document.getElementsByClassName("scrollBox")[0];
+            let today = new Date();
+            let strToday = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+            let tempAnswer = document.createElement("div");
+
+            const btnSend = document.getElementById("btnSend");
+            const inputBox = document.getElementById("txt");
+
+            let isAutoScrollEnabled = true;
+
+            scrollBox.addEventListener("scroll", () => {
+                const nearBottom = scrollBox.scrollHeight - scrollBox.scrollTop <= scrollBox.clientHeight + 20;
+                isAutoScrollEnabled = nearBottom;
+            });
+
+            dataSources.className = "data-sources";
+            divAnswer.className = "answer";
+            divAnswer.dir = "ltr";
+            tempAnswer.className = "divAnswer";
+            divAnswer.append(tempAnswer);
+            dataSources.innerHTML = ""; // 사용자 입력 메시지를 비움
+
+            let url = "https://athena.uracle.co.kr:19001/uracle/chat"
+
+            const params = {
+                "session_id": sessionId,
+                "query": selectedKeyword + " " + sendText,
+                "see_more": seeMore,
+            };
+
+            if (seeMore) {
+                params["orig_query"] = originQuery;
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                });
+
+                if (!response.ok) {
+                    const reader = response.body.getReader();
+                    const utf8Decoder = new TextDecoder('utf-8');
+                    const { value } = await reader.read();
+                    if (response.status === 400) {
+                        if (connectRetry < MAX_RETRIES) {
+                            sessionId = '';
+                            divAnswer ? divAnswer.remove() : "";
+                            connectRetry++;
+                            getChatbotAnswer(txt, seeMore);
+                        } else {
+                            console.error("Maximum retry attempts reached. Connection failed.");
+                        }
+                    }
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                const utf8Decoder = new TextDecoder('utf-8');
+                const boundaryDecoder = new TextDecoder('iso-8859-1');
+                let done = false;
+                let buffer = new Uint8Array();
+
+                if (reader) {
+                    chatbotAnswerFlag = true;
+                    if (chatBox != undefined) {
+                        if (chatBox.dataset.date == strToday) {
+                            if (!seeMore) {
+                                chatBox.append(dataSources);
+                                chatBox.append(divAnswer);
+                            }
+                        } else {
+                            let divToday = document.createElement("div");
+                            divToday.className = "by-date";
+                            divToday.dataset.date = strToday;
+                            let divDate = document.createElement("div");
+                            divDate.className = "date";
+                            divDate.innerHTML = formatDate(today);
+                            scrollBox.append(divToday);
+
+                            divToday.append(divDate);
+                            divToday.append(dataSources);
+                            divToday.append(divAnswer);
+                        }
+                    } else {
+                        let divToday = document.createElement("div");
+                        divToday.className = "by-date";
+                        divToday.dataset.date = strToday;
+                        let divDate = document.createElement("div");
+                        divDate.className = "date";
+                        divDate.innerHTML = formatDate(today);
+                        scrollBox.append(divToday);
+                        divToday.append(divDate);
+                        divToday.append(dataSources);
+                        divToday.append(divAnswer);
+                    }
+                } else {
+                    chatbotAnswerFlag = false;
+                }
+                btnSend.className = "btn-stop";
+                document.querySelector('.chatbot-wrap').addEventListener('click', function (event) {
+                    if (event.target.classList.contains('btn-stop')) {
+                        stop = true;
+                        chatbotAnswerFlag = false;
+                        btnSend.className = "btn-add";
+                        inputBox.value.trim() === '' ? btnSend.disabled = true : btnSend.disabled = false;
+                    }
+                });
+
+                while (!done) {
+                    if (stop) {
+                        await reader.cancel();
+                        break;
+                        stop = false;
+                    }
+                    const { value, done: isDone } = await reader.read();
+                    done = isDone;
+
+                    if (typeof value !== 'undefined' && value !== null) {
+                        connectRetry = 0;
+                        const combined = new Uint8Array(buffer.length + value.length);
+                        combined.set(buffer);
+                        combined.set(value, buffer.length);
+                        buffer = combined;
+
+                        const byteDec = boundaryDecoder.decode(buffer);
+
+                        let dataBeginIdx = -1;
+                        let dataEndIdx = -1;
+
+                        if (byteDec.startsWith('data: {')) {
+                            dataBeginIdx = 0;
+                        } else {
+                            dataBeginIdx = byteDec.indexOf('\r\n\r\ndata: {');
+                            if (dataBeginIdx !== -1) {
+                                dataBeginIdx += 4;
+                            }
+                        }
+
+                        if (dataBeginIdx !== -1) {
+                            dataEndIdx = byteDec.lastIndexOf('\r\n\r\n');
+                        }
+
+                        if (dataBeginIdx !== -1 && dataEndIdx !== -1) {
+                            const all_chunks = utf8Decoder.decode(buffer.subarray(dataBeginIdx, dataEndIdx));
+                            buffer = buffer.subarray(dataEndIdx + 4);
+                            for (chunk of all_chunks.split('\r\n\r\n')) {
+                                if (chunk.startsWith('data: ')) {
+                                    const chunk_data = JSON.parse(chunk.substring(6));
+
+                                    if (typeof chunk_data.text !== 'undefined') {
+                                        let lastDivAnswer = await document.getElementsByClassName("divAnswer")[document.getElementsByClassName("divAnswer").length - 1];
+                                        if (!seeMore) {
+                                            chunk_data.text = chunk_data.text.trimStart();
+                                        }
+
+                                        lastReceivedData[lastReceivedData.length - 1] = chunk_data.text;
+
+                                        const lastReceivedDataJoin = lastReceivedData.join('');
+
+                                        const md = window.markdownit({
+                                            highlight: function (str, lang) {
+                                                const innerHTML = md.render(str);
+                                                if (lang && hljs.getLanguage(lang)) {
+                                                    try {
+                                                        return '<pre class="hljs"><code style="white-space:pre-wrap !important">' +
+                                                            hljs.highlight(str, { language: lang }).value +
+                                                            '</code></pre>';
+                                                    } catch (__) { }
+                                                }
+
+                                                return '<pre class="hljs"><code>' + innerHTML + '</code></pre>';
+                                            }
+                                        });
+
+                                        const markdownSource = lastReceivedDataJoin;
+                                        const result = md.render(markdownSource);
+                                        lastDivAnswer.innerHTML = `<div>${result}</div>`
+                                        if (isAutoScrollEnabled) {
+                                            scrollBox.scrollTop = scrollBox.scrollHeight;
+                                        }
+                                    }
+                                    if (typeof chunk_data.end !== 'undefined') {
+                                        console.log(chunk_data.end);
+                                        connectRetry = 0;
+                                        chatbotAnswerFlag = false;
+                                        btnSend.className = "btn-add";
+                                        inputBox.value.trim() === '' ? btnSend.disabled = true : btnSend.disabled = false;
+                                        if (document.getElementsByClassName("btn-chat-more")[0]) {
+                                            document.getElementsByClassName("btn-chat-more")[0].remove();
+                                        }
+                                        if (chunk_data.finish_reason === 'length') {
+                                            let btnMore = document.createElement("button");
+                                            btnMore.textContent = '더보기';
+                                            btnMore.className = "btn-chat-more";
+                                            document.getElementsByClassName('answer')[document.getElementsByClassName('answer').length - 1].append(btnMore);
+                                            console.log("더보기");
+                                        } else {
+                                            originQuery = '';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch {
+                console.log("ERROR::::::")
+                if (connectRetry < MAX_RETRIES) {
+                    sessionId = '';
+                    divAnswer ? divAnswer.remove() : "";
+                    dataSources ? dataSources.remove() : "";
+                    connectRetry++;
+                    getChatbotAnswer(txt, seeMore);
+                } else {
+                    console.error("Maximum retry attempts reached. Connection failed.");
+                }
+            }
+        }
+
+        // 더보기 클릭 이벤트
+        document.querySelector('.chatbot-wrap').addEventListener('click', function (event) {
+            if (event.target.classList.contains('btn-chat-more')) {
+                document.querySelector('.btn-chat-more').remove();
+                getChatbotAnswer(lastReceivedData[lastReceivedData.length - 1], true);
+                btnSend.className = "btn-stop";
+                btnSend.disabled = false;
+            }
+        });
+
+        // 변환 함수
+        function replaceYearWords(input) {
+            const currentYear = new Date().getFullYear();
+            const wordToYearMapping = {
+                '지지난해': currentYear - 2,
+                '재작년': currentYear - 2,
+                '작년': currentYear - 1,
+                '지난해': currentYear - 1,
+                '전년': currentYear - 1,
+                '올해': currentYear,
+                '금년': currentYear,
+                '내년': currentYear + 1,
+                '명년': currentYear + 1,
+                '다음 해': currentYear + 1,
+                '오는 해': currentYear + 1
+            };
+
+            const pattern = Object.keys(wordToYearMapping)
+                .map(word => word.split('').join('\\s*'))
+                .join('|');
+
+            const timePattern = `(\\d+)\\s*년\\s*(전|후|뒤)`;
+
+            const regex = new RegExp(`${pattern}|${timePattern}`, 'gi');
+
+            return input.replace(regex, (match, num, direction) => {
+                if (num && direction) {
+                    const offset = parseInt(num, 10) * (direction === '전' ? -1 : direction === '후' || direction === '뒤' ? +1 : 1);
+                    return `${currentYear + offset}년`;
+                } else {
+                    const normalizedWord = match.replace(/\s+/g, '');
+                    return `${wordToYearMapping[normalizedWord]}년`;
+                }
+            });
+        }
+
+        // 모바일 환경 감지 함수
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                navigator.userAgent
+            );
+        }
+
+        function replaceKeywords(input) {
+            const keywordMapping = {
+                // MADP API
+                '모바일 관리': 'MADP API 모바일 관리',
+                '리소스 업로드': 'MADP API 리소스 업로드',
+                'Push 관리': 'MADP API Push 관리',
+                '가로 모드': 'MADP API 가로 모드',
+                '세로 모드': 'MADP API 세로 모드',
+                "Core Library": "MADP API Core Library",
+                "MCore Framework": "MADP API MCore Framework",
+                "로컬 데이터베이스": "MADP API 로컬 데이터베이스",
+                "파일 입출력": "MADP API 파일 입출력",
+                "다국어 처리": "MADP API 다국어 처리",
+                "미디어 처리": "MADP API 미디어 처리",
+                "네트워크 관련 기능": "MADP API 네트워크 관련 기능",
+                "팝업 처리": "MADP API 팝업 처리",
+                "ZIP 압축": "MADP API ZIP 압축",
+                "Qr코드 관련": "MADP API Qr코드 관련",
+                "Drawing 관련": "MADP API Drawing 관련",
+                "문서 뷰어 관련": "MADP API 문서 뷰어 관련",
+                "앱 위변조 방지": "MADP API 앱 위변조 방지",
+                "PUSH 관련": "MADP API PUSH 관련",
+                "위치 정보 기능": "MADP API 위치 정보 기능",
+                "앱 보안 관련": "MADP API 앱 보안 관련",
+                "화면 이벤트": "MADP API 화면 이벤트",
+                "화면 이동 및 관리": "MADP API 화면 이동 및 관리",
+                "데이터 관리": "MADP API 데이터 관리",
+                "네이티브 기능": "MADP API 네이티브 기능",
+                "디바이스 및 앱 정보": "MADP API 디바이스 및 앱 정보",
+                "암복호화": "MADP API 암복호화",
+                "OS 정보 확인": "MADP API OS 정보 확인",
+                "디바이스 상세 정보 조회": "MADP API 디바이스 상세 정보 조회",
+                "웹 뷰 브라우저 정보": "MADP API 웹 뷰 브라우저 정보",
+                "Page 정보 추출": "MADP API Page 정보 추출",
+                "화면 지연 이동": "MADP API 화면 지연 이동",
+                "탭 화면 이동": "MADP API 탭 화면 이동",
+                "데이터베이스 파일 생성": "MADP API 데이터베이스 파일 생성",
+                "데이터베이스 sql 실행": "MADP API 데이터베이스 sql 실행",
+                "파일 생성": "MADP API 파일 생성",
+                "파일 읽기": "MADP API 파일 읽기",
+                "파일 삭제": "MADP API 파일 삭제",
+                "파일 정보 조회": "MADP API 파일 정보 조회",
+                "다국어 변환 출력": "MADP API 다국어 변환 출력",
+                "언어 변경 이벤트": "MADP API 언어 변경 이벤트",
+                "미디어 촬영": "MADP API 미디어 촬영",
+                "앨범 저장": "MADP API 앨범 저장",
+                "미디어 정보 조회": "MADP API 미디어 정보 조회",
+                "네트워크 통신": "MADP API 네트워크 통신",
+                "HTTP 파일 업로드": "MADP API HTTP 파일 업로드",
+                "HTTP 파일 다운로드": "MADP API HTTP 파일 다운로드",
+                "FTP 파일 리스트": "MADP API FTP 파일 리스트",
+                "알림 팝업": "MADP API 알림 팝업",
+                "데이트 피커": "MADP API 데이트 피커",
+                "리스트 팝업": "MADP API 리스트 팝업",
+                "파일 압축": "MADP API 파일 압축",
+                "QR 코드 스캔": "MADP API QR 코드 스캔",
+                "드로잉 화면": "MADP API 드로잉 화면",
+                "문서 뷰어": "MADP API 문서 뷰어",
+                "앱 설치": "MADP API 앱 설치",
+                "앱 삭제": "MADP API 앱 삭제",
+                "앱 정보 조회": "MADP API 앱 정보 조회",
+                "화면 이동": "MADP API 화면 이동",
+                "화면 로드": "MADP API 화면 로드",
+                "화면 전환": "MADP API 화면 전환",
+                "화면 스택 관리": "MADP API 화면 스택 관리",
+                "화면 복귀": "MADP API 화면 복귀",
+                "앱 백그라운드": "MADP API 앱 백그라운드",
+                "앱 포그라운드": "MADP API 앱 포그라운드",
+                "화면 종료": "MADP API 화면 종료",
+                "화면 애니메이션": "MADP API 화면 애니메이션",
+                "화면 전환 효과": "MADP API 화면 전환 효과",
+                "화면 방향 설정": "MADP API 화면 방향 설정",
+            };
+
+            if (input.toLowerCase().includes("madp")) {
+                return input;
+            }
+
+            Object.entries(keywordMapping).forEach(([key, value]) => {
+                const regex = new RegExp(key.replace(/\s+/g, '\\s*'), 'gi');
+                input = input.replace(regex, value);
+            });
+
+            return input;
+        }
+
+        // 버튼 클릭 이벤트 처리
+        function handleButtonClick(event) {
+            const clickedButton = event.target;
+
+            if (clickedButton.classList.contains("active")) {
+                clickedButton.classList.remove("active");
+            } else {
+                const buttons = clickedButton.parentElement.querySelectorAll("button");
+                buttons.forEach(button => button.classList.remove("active"));
+                clickedButton.classList.add("active");
+            }
+        }
+
+        // 키워드 버튼 그룹 생성
+        function createKeywordButtons(keywords) {
+            const keywordDiv = document.createElement("div");
+            keywordDiv.classList.add("keywordMapping");
+
+            keywords.forEach(keyword => {
+                const button = document.createElement("button");
+                button.innerText = keyword;
+
+                button.addEventListener("click", function () {
+                    const buttons = button.parentElement.querySelectorAll("button");
+                    buttons.forEach(btn => btn.classList.remove("active"));
+
+                    if (!button.classList.contains("active")) {
+                        button.classList.add("active");
+                    } else {
+                        button.classList.remove("active");
+                    }
+                });
+
+                keywordDiv.appendChild(button);
+            });
+
+            return keywordDiv;
+        }
+
+        // 초기 버튼 클릭 이벤트 추가
+        document.querySelectorAll(".keywordMapping button").forEach(button => {
+            button.addEventListener("click", handleButtonClick);
+        });
+
+        // 키워드 선택 확인 함수
+        function getSelectedKeyword() {
+            const activeButton = document.querySelector(".keywordMapping button.active");
+            return activeButton ? activeButton.innerText : "";
+        }
+
+        // 새로운 질문과 답변 추가
+        function addNewQuestionAndAnswer() {
+            const chatBox = document.getElementsByClassName("by-date")[document.getElementsByClassName("by-date").length - 1];
+            const scrollBox = document.getElementsByClassName("scrollBox")[0];
+
+            document.querySelectorAll(".keywordMapping button.active").forEach(button => {
+                button.classList.remove("active");
+            });
+
+            const myDiv = document.createElement("div");
+            myDiv.classList.add("my");
+            chatBox.appendChild(myDiv);
+
+            const questionDiv = document.createElement("div");
+            questionDiv.classList.add("question");
+            questionDiv.innerHTML = "키워드를 선택 해주세요.";
+
+            const newKeywords = ["MADP API", "MADP ADMIN", "MADP IOS가이드", "MADP AOS가이드", "MADP Push가이드"];
+            const keywordButtons = createKeywordButtons(newKeywords);
+            questionDiv.appendChild(keywordButtons);
+
+            chatBox.appendChild(questionDiv);
+            scrollBox.scrollTop = scrollBox.scrollHeight;
+        }
+
+        function closeChatbot() {
+            const chatbotWrap = document.querySelector(".chatbot-wrap");
+            const btnChatbot = document.querySelector(".btn-chatbot");
+            
+            stop = true;
+            chatbotAnswerFlag = false;
+            document.getElementById("txt").value = "";
+            document.getElementById("btnSend").disabled = true;
+            document.getElementById("btnSend").className = "btn-add";
+            chatbotWrap.classList.remove("show-popup");
+            document.body.style.overflow = "";
+            setTimeout(() => {
+                chatbotWrap.style.display = "none";
+                btnChatbot.classList.remove("active");
+            }, 300);
+        }
     </script>
 </body>
 
