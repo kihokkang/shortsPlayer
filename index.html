@@ -353,12 +353,12 @@
 
         .chatbot-wrap {
             position: fixed;
-            bottom: 80px;
+            bottom: 0;
             right: 20px;
             width: 500px;
             height: 600px;
             background: white;
-            border-radius: 10px;
+            border-radius: 10px 10px 0 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: none;
             flex-direction: column;
@@ -482,28 +482,17 @@
         }
 
         .btn-chatbot {
-            width: 50px;
-            height: 50px;
             background: #007bff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             color: white;
-            text-decoration: none;
-            margin: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: height 0.3s ease;
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            z-index: 1001;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
         .btn-chatbot.active {
             background: #0056b3;
-            height: 0;
-            margin: 0;
         }
 
         .btn-chat-more {
@@ -569,7 +558,6 @@
                     <button class="btn-add" id="btnSend" disabled onclick="chatbotSendEvent()"></button>
                 </div>
             </div>
-            <a href="#" class="btn-chatbot ai" id="btnChatbot"></a>
         </div>
     </div>
 
@@ -810,8 +798,8 @@
 
             document.querySelectorAll("video").forEach((video, index) => {
                 video.addEventListener("loadeddata", () => {
-                    document.getElementById(`thumbnail-${index}`).style.display = "none"; // 썸네일 숨기기
-                    document.getElementById(`loading-${index}`).style.display = "none"; // 로딩 스피너 숨기기
+                    document.getElementById(`thumbnail-${index}`).style.display = "none";
+                    document.getElementById(`loading-${index}`).style.display = "none";
                 });
             });
 
@@ -823,7 +811,6 @@
                     videos[index].disliked = false;
                     updateButtons();
                 }
-
                 else if (event.target.closest(".dislike-button")) {
                     const index = event.target.closest(".dislike-button").dataset.index;
                     videos[index].disliked = !videos[index].disliked;
@@ -832,7 +819,6 @@
                 }
                 else if (event.target.closest(".review-button")) {
                     const chatbotWrap = document.querySelector(".chatbot-wrap");
-                    const btnChatbot = document.querySelector(".btn-chatbot");
                     
                     if (chatbotWrap.classList.contains("show-popup")) {
                         stop = true;
@@ -844,14 +830,12 @@
                         document.body.style.overflow = "";
                         setTimeout(() => {
                             chatbotWrap.style.display = "none";
-                            btnChatbot.classList.remove("active");
                         }, 300);
                     } else {
                         chatbotWrap.style.display = "flex";
                         document.body.style.overflow = "hidden";
                         setTimeout(() => {
                             chatbotWrap.classList.add("show-popup");
-                            btnChatbot.classList.add("active");
                         }, 10);
                     }
                 }
@@ -872,18 +856,15 @@
             // Swiper 초기화
             const swiper = new Swiper('.swiper', {
                 direction: 'vertical',
-                mousewheel: false, // Swiper 자체 마우스휠 비활성화 (직접 처리할 것임)
+                mousewheel: false,
                 on: {
                     slideChange: function () {
-                        // let activeIndex = this.activeIndex;
                         currentIndex = this.activeIndex;
                         let totalSlides = videos.length;
                         updateShareLink();
 
-                        // 모든 비디오 일시 정지
                         document.querySelectorAll("video").forEach(video => video.pause());
 
-                        // 현재 활성화된 비디오 재생
                         setTimeout(() => {
                             let activeSlide = document.querySelector(".swiper-slide-active video");
                             if (activeSlide) {
@@ -900,32 +881,31 @@
                 firstVideo.play();
             }
 
-            // 마우스 휠 이벤트 추가 (배경 포함 모든 영역에서 동작)
+            // 마우스 휠 이벤트 추가
             let isScrolling = false;
             document.addEventListener("wheel", (event) => {
                 const sharePopup = document.getElementById("shareOverlay");
                 const isPopupOpen = sharePopup && sharePopup.style.display === "flex";
 
                 if (isPopupOpen) {
-                    event.preventDefault(); // 팝업 열려있을 땐 휠 막기
+                    event.preventDefault();
                     return;
                 }
 
-                if (isScrolling) return; // 연속 휠 스크롤 방지
+                if (isScrolling) return;
                 isScrolling = true;
-                setTimeout(() => isScrolling = false, 400); // 0.4초 동안 추가 스크롤 방지
+                setTimeout(() => isScrolling = false, 400);
 
-                // let activeIndex = swiper.activeIndex;
                 currentIndex = swiper.activeIndex;
                 let totalSlides = videos.length;
 
                 if (event.deltaY > 0 && currentIndex < totalSlides - 1) {
-                    swiper.slideNext(); // 다음 슬라이드 이동
+                    swiper.slideNext();
                 } else if (event.deltaY < 0 && currentIndex > 0) {
-                    swiper.slidePrev(); // 이전 슬라이드 이동
+                    swiper.slidePrev();
                 }
 
-                event.preventDefault(); // 기본 휠 스크롤 방지
+                event.preventDefault();
             }, { passive: false });
 
             // 초기 버튼 상태 설정
@@ -942,37 +922,35 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             const chatbotWrap = document.querySelector(".chatbot-wrap");
-            const btnChatbot = document.querySelector(".btn-chatbot");
             let isResizing = false;
-            let newWidth = chatbotWrap.offsetWidth; // 초기 너비 값 설정
-            let resizeRequest; // requestAnimationFrame ID
+            let newWidth = chatbotWrap.offsetWidth;
+            let resizeRequest;
 
             let today = new Date();
             document.getElementById("chatbotToday").innerHTML = formatDate(today);
             document.getElementById("startByDate").dataset.date = (today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate());
 
-            // Toggle chatbot visibility
-            btnChatbot.addEventListener("click", function (e) {
-                e.preventDefault();
-                if (chatbotWrap.classList.contains("show-popup")) {
-                    stop = true;
-                    chatbotAnswerFlag = false;
-                    document.getElementById("txt").value = "";
-                    document.getElementById("btnSend").disabled = true;
-                    document.getElementById("btnSend").className = "btn-add";
-                    chatbotWrap.classList.remove("show-popup");
-                    document.body.style.overflow = "";
-                    setTimeout(() => {
-                        chatbotWrap.style.display = "none";
-                        btnChatbot.classList.remove("active");
-                    }, 300);
-                } else {
-                    chatbotWrap.style.display = "flex";
-                    document.body.style.overflow = "hidden";
-                    setTimeout(() => {
-                        chatbotWrap.classList.add("show-popup");
-                        btnChatbot.classList.add("active");
-                    }, 10);
+            // Review button click handler
+            document.addEventListener("click", function (event) {
+                if (event.target.closest(".review-button")) {
+                    if (chatbotWrap.classList.contains("show-popup")) {
+                        stop = true;
+                        chatbotAnswerFlag = false;
+                        document.getElementById("txt").value = "";
+                        document.getElementById("btnSend").disabled = true;
+                        document.getElementById("btnSend").className = "btn-add";
+                        chatbotWrap.classList.remove("show-popup");
+                        document.body.style.overflow = "";
+                        setTimeout(() => {
+                            chatbotWrap.style.display = "none";
+                        }, 300);
+                    } else {
+                        chatbotWrap.style.display = "flex";
+                        document.body.style.overflow = "hidden";
+                        setTimeout(() => {
+                            chatbotWrap.classList.add("show-popup");
+                        }, 10);
+                    }
                 }
             });
 
@@ -1632,7 +1610,6 @@
 
         function closeChatbot() {
             const chatbotWrap = document.querySelector(".chatbot-wrap");
-            const btnChatbot = document.querySelector(".btn-chatbot");
             
             stop = true;
             chatbotAnswerFlag = false;
@@ -1643,7 +1620,6 @@
             document.body.style.overflow = "";
             setTimeout(() => {
                 chatbotWrap.style.display = "none";
-                btnChatbot.classList.remove("active");
             }, 300);
         }
     </script>
