@@ -43,7 +43,7 @@
 .btn-chatbot.ai.active {background: url(../img/icon-chatbot-close.png) center center no-repeat;background-size: 60px;}
 .chatbot-wrap .chatbot-title {
    width: 100%; padding: 0 10px 10px 45px;margin: 0; font-size: 18px;color: #000;font-weight: 700;;line-height:42px; background: url(../img/top-uracle-ai-logo.png) left 5px no-repeat;background-size: 38px;
-    border-bottom: 1px dotted #c1c1c1;
+    /* border-bottom: 1px dotted #c1c1c1; */
 }
 .chatbot-wrap .date {padding: 15px 0 10px; font-size: 12px;color: #848484;font-weight: 400;text-align: center;}
 .chatbot-wrap .my {padding: 20px 30px 30px; background: url(../img/my-icon.png) left center no-repeat;background-size: 61px;}
