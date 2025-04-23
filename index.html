@@ -207,6 +207,43 @@
             border-radius: 20px 20px 0 0;
             padding: 20px;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: slideUp 0.3s ease forwards;
+        }
+
+        @keyframes slideUp {
+            0% {
+                bottom: -100%;
+                opacity: 0;
+            }
+            100% {
+                bottom: 0;
+                opacity: 1;
+            }
+        }
+
+        .share-popup.show {
+            animation: slideUp 0.3s ease forwards;
+        }
+
+        .share-popup.hide {
+            animation: slideDown 0.1s ease forwards;
+        }
+
+        @keyframes slideDown {
+            0% {
+                bottom: 0;
+                opacity: 1;
+            }
+            100% {
+                bottom: -100%;
+                opacity: 0;
+            }
         }
 
         .popup-header {
@@ -238,6 +275,11 @@
             min-width: 60px;
         }
 
+        .share-item span {
+            font-size: 11px;
+            margin-top: 6px;
+        }
+
         .icon {
             width: 48px;
             height: 48px;
@@ -254,22 +296,34 @@
         @media (max-width: 480px) {
             .share-popup {
                 width: 100%;
+                max-width: 100%;
                 border-radius: 16px 16px 0 0;
                 padding: 16px;
+                margin: 0;
             }
 
             .popup-header {
                 font-size: 16px;
             }
 
+            .share-options {
+                padding: 10px 0;
+                gap: 10px;
+            }
+
             .share-item {
-                min-width: 56px;
+                min-width: 50px;
+            }
+
+            .share-item span {
+                font-size: 10px;
+                margin-top: 4px;
             }
 
             .icon {
-                width: 44px;
-                height: 44px;
-                font-size: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
             }
         }
 
@@ -281,6 +335,7 @@
             display: flex;
             align-items: center;
             margin-top: 15px;
+            margin-bottom: 15px;
             gap: 10px;
         }
 
@@ -300,7 +355,7 @@
             cursor: pointer;
         }
 
-        #review-modal {
+        #chatbot-modal {
             position: absolute;
             bottom: 0;
             left: 0;
@@ -316,7 +371,7 @@
             /* shorts 위에 뜨게 */
         }
 
-        #review-modal.show {
+        #chatbot-modal.show {
             transform: translateY(0);
         }
 
@@ -347,19 +402,23 @@
         .chatbot-pop {
             position: fixed;
             bottom: 0;
+            left: 0;
             right: 0;
             z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
         }
 
         .chatbot-wrap {
-            position: fixed;
-            bottom: 0px !important;
-            right: 20px;
-            width: 500px;
+            position: relative;
+            width: 100%;
+            max-width: 500px;
             height: 600px;
+            right:0;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 20px 20px 20px 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
             display: none;
             flex-direction: column;
             transition: transform 0.3s ease-out;
@@ -533,7 +592,7 @@
         </div>
 
         <!-- chatbot 영역 -->
-        <div class="chatbot-pop">
+        <div class="chatbot-pop overlay" style="display: none;">
             <div class="chatbot-wrap" id="chatbotWrap">
                 <div class="chatbot-header">
                     <h3 class="chatbot-title">Uracle</h3>
@@ -634,18 +693,30 @@
         let currentIndex = 0;
 
         function openPopup() {
-            document.getElementById("shareOverlay").style.display = "flex";
+            const shareOverlay = document.getElementById("shareOverlay");
+            const sharePopup = document.querySelector(".share-popup");
+            
+            shareOverlay.style.display = "flex";
+            sharePopup.classList.remove("hide");
+            sharePopup.classList.add("show");
             // 팝업 열리면 재생하고 있는 동영상 정지
             document.querySelectorAll("video").forEach(video => video.pause());
         }
 
         function closePopup() {
-            document.getElementById("shareOverlay").style.display = "none";
-            // 팝업 닫히면 현재 슬라이드 동영상 다시 재생
-            let activeSlide = document.querySelector(".swiper-slide-active video");
-            if (activeSlide) {
-                activeSlide.play();
-            }
+            const shareOverlay = document.getElementById("shareOverlay");
+            const sharePopup = document.querySelector(".share-popup");
+            
+            sharePopup.classList.remove("show");
+            sharePopup.classList.add("hide");
+            setTimeout(() => {
+                shareOverlay.style.display = "none";
+                // 팝업 닫히면 현재 슬라이드 동영상 다시 재생
+                let activeSlide = document.querySelector(".swiper-slide-active video");
+                if (activeSlide) {
+                    activeSlide.play();
+                }
+            }, 100);
         }
 
         function copyLink() {
@@ -661,10 +732,6 @@
             if (input) {
                 input.value = videos[currentIndex].src;
             }
-        }
-
-        function closeReviewModal() {
-            document.getElementById('review-modal').classList.remove('show');
         }
 
         shareItems.forEach(item => {
@@ -720,7 +787,7 @@
                         <i class="fas fa-thumbs-down"></i>
                         <div class="control-text">싫어요</div>
                     </div>
-                    <div class="control-icon review-button" data-index="${index}">
+                    <div class="control-icon chatbot-button" data-index="${index}">
                         <i class="fas fa-robot"></i>
                         <div class="control-text">Chatbot</div>
                     </div>
@@ -784,6 +851,35 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            // 동영상 영역 클릭 이벤트 추가
+            document.querySelectorAll('.video-wrapper').forEach(wrapper => {
+                wrapper.addEventListener('click', function() {
+                    const video = this.querySelector('video');
+                    if (video) {
+                        if (video.paused) {
+                            video.play();
+                        } else {
+                            video.pause();
+                        }
+                    }
+                });
+            });
+
+            // 터치 이벤트 추가 (모바일 대응)
+            document.querySelectorAll('.video-wrapper').forEach(wrapper => {
+                wrapper.addEventListener('touchend', function(e) {
+                    e.preventDefault(); // 기본 터치 동작 방지
+                    const video = this.querySelector('video');
+                    if (video) {
+                        if (video.paused) {
+                            video.play();
+                        } else {
+                            video.pause();
+                        }
+                    }
+                });
+            });
+
             function updateButtons() {
                 document.querySelectorAll(".swiper-slide").forEach((slide, index) => {
                     const likeButton = slide.querySelector(".like-button");
@@ -817,27 +913,9 @@
                     videos[index].liked = false;
                     updateButtons();
                 }
-                else if (event.target.closest(".review-button")) {
+                else if (event.target.closest(".chatbot-button")) {
                     const chatbotWrap = document.querySelector(".chatbot-wrap");
-                    
-                    if (chatbotWrap.classList.contains("show-popup")) {
-                        stop = true;
-                        chatbotAnswerFlag = false;
-                        document.getElementById("txt").value = "";
-                        document.getElementById("btnSend").disabled = true;
-                        document.getElementById("btnSend").className = "btn-add";
-                        chatbotWrap.classList.remove("show-popup");
-                        document.body.style.overflow = "";
-                        setTimeout(() => {
-                            chatbotWrap.style.display = "none";
-                        }, 300);
-                    } else {
-                        chatbotWrap.style.display = "flex";
-                        document.body.style.overflow = "hidden";
-                        setTimeout(() => {
-                            chatbotWrap.classList.add("show-popup");
-                        }, 10);
-                    }
+                    openChatbot();
                 }
                 else if (event.target.closest(".share-button")) {
                     openPopup();
@@ -885,9 +963,11 @@
             let isScrolling = false;
             document.addEventListener("wheel", (event) => {
                 const sharePopup = document.getElementById("shareOverlay");
-                const isPopupOpen = sharePopup && sharePopup.style.display === "flex";
+                const isSharePopupOpen = sharePopup && sharePopup.style.display === "flex";
+                const chatbotWrap = document.querySelector(".chatbot-wrap");
+                const isChatbotOpen = chatbotWrap && chatbotWrap.classList.contains("show-popup");
 
-                if (isPopupOpen) {
+                if (isSharePopupOpen || isChatbotOpen) {
                     event.preventDefault();
                     return;
                 }
@@ -930,9 +1010,9 @@
             document.getElementById("chatbotToday").innerHTML = formatDate(today);
             document.getElementById("startByDate").dataset.date = (today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate());
 
-            // Review button click handler
+            // 챗봇 버튼 click handler
             document.addEventListener("click", function (event) {
-                if (event.target.closest(".review-button")) {
+                if (event.target.closest(".chatbot-button")) {
                     if (chatbotWrap.classList.contains("show-popup")) {
                         stop = true;
                         chatbotAnswerFlag = false;
@@ -1608,18 +1688,39 @@
             scrollBox.scrollTop = scrollBox.scrollHeight;
         }
 
+        function openChatbot() {
+            const chatbotWrap = document.querySelector(".chatbot-wrap");
+            const chatbotPop = document.querySelector(".chatbot-pop");
+            
+            chatbotPop.style.display = "flex";
+            chatbotWrap.style.display = "flex";
+            document.body.style.overflow = "hidden";
+            setTimeout(() => {
+                chatbotWrap.classList.add("show-popup");
+            }, 10);
+            document.querySelectorAll("video").forEach(video => video.pause());
+        }
+
         function closeChatbot() {
             const chatbotWrap = document.querySelector(".chatbot-wrap");
+            const chatbotPop = document.querySelector(".chatbot-pop");
+            
+            chatbotWrap.classList.remove("show-popup");
+            document.body.style.overflow = "";
             
             stop = true;
             chatbotAnswerFlag = false;
             document.getElementById("txt").value = "";
             document.getElementById("btnSend").disabled = true;
             document.getElementById("btnSend").className = "btn-add";
-            chatbotWrap.classList.remove("show-popup");
-            document.body.style.overflow = "";
+            
             setTimeout(() => {
                 chatbotWrap.style.display = "none";
+                chatbotPop.style.display = "none";
+                let activeSlide = document.querySelector(".swiper-slide-active video");
+                if (activeSlide) {
+                    activeSlide.play();
+                }
             }, 300);
         }
     </script>
