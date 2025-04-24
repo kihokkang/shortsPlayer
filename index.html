@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
+
     <!-- 모피어스 챗봇 스타일 적용 -->
     <link rel="stylesheet" href="css/morpheus-style.css" />
     <style>
@@ -221,6 +221,7 @@
                 bottom: -100%;
                 opacity: 0;
             }
+
             100% {
                 bottom: 0;
                 opacity: 1;
@@ -240,6 +241,7 @@
                 bottom: 0;
                 opacity: 1;
             }
+
             100% {
                 bottom: -100%;
                 opacity: 0;
@@ -415,7 +417,7 @@
             width: 100%;
             max-width: 500px;
             height: 600px;
-            right:0;
+            right: 0;
             background: white;
             border-radius: 20px 20px 20px 20px;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
@@ -604,16 +606,17 @@
                             <div class="date" id="chatbotToday"></div>
                             <div class="data-sources"></div>
                             <div class="answer" dir="ltr">
-                                <code>안녕하세요!
-                                    저는 유라클의 대화형 챗봇, Athena 입니다.
-                                    유라클에 대해 궁금한 점은 언제든 물어보세요!    
+                                <code id="welcomeMessage">안녕하세요!
+                                    저는 유라클의 대화형 챗봇, MessageAI 입니다.
+                                    상품에 대해 궁금한 점은 언제든 물어보세요!    
                                 </code>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="input-box">
-                    <textarea class="type" placeholder="메세지를 입력하세요!" id="txt" onkeypress="question(event)" oninput="chatbotInputEvent()"></textarea>
+                    <textarea class="type" placeholder="메세지를 입력하세요!" id="txt" onkeypress="question(event)"
+                        oninput="chatbotInputEvent()"></textarea>
                     <button class="btn-add" id="btnSend" disabled onclick="chatbotSendEvent()"></button>
                 </div>
             </div>
@@ -646,35 +649,41 @@
         Kakao.init('76533188d481d2576e1330c0e59156b6');
 
         const videos = [
-            {
-                src: "https://prod-usp-logs.s3.ap-northeast-2.amazonaws.com/test_media/video1.mp4",
-                title: "크으 ~ 이런 날씨에 회사 주차장에서 담배라니 ~",
-                username: "dhlee0320",
-                profileImage: "https://www.w3schools.com/w3images/avatar2.png",
-                hashtags: ["#회사", "#흡연", "#주차장"],
-                liked: false,
-                disliked: false,
-                thumbnail: "./video1_0_frame.png"
-            },
-            {
-                src: "https://prod-usp-logs.s3.ap-northeast-2.amazonaws.com/test_media/video2.mp4",
-                title: "차가 많네요",
+        {
+                src: "https://prod-usp-logs.s3.ap-northeast-2.amazonaws.com/test_media/video_02.mp4",
+                title: "지속적인 촉촉함",
+                productName: "비누",
+                productId:"P_3DB27D79915C",
                 username: "soyoung1234",
                 profileImage: "https://www.w3schools.com/w3images/avatar4.png",
-                hashtags: ["#검은차", "#나무", "#봄"],
+                hashtags: ["#촉촉함", "#느낌", "#깨끗함"],
                 liked: false,
                 disliked: false,
-                thumbnail: "./video2_0_frame.png"
+                thumbnail: "./video02_0_frame.png"
             },
             {
-                src: "https://prod-usp-logs.s3.ap-northeast-2.amazonaws.com/test_media/video3.mp4",
-                title: "하늘 쥑이노!",
+                src: "https://prod-usp-logs.s3.ap-northeast-2.amazonaws.com/test_media/video_03.mp4",
+                title: "여름에 이옷을!!",
+                productName: "프론트투라인",
+                productId:"P_1756790AD7B7",
                 username: "sodamKim3921",
                 profileImage: "https://www.w3schools.com/w3images/avatar3.png",
-                hashtags: ["#풍경", "#여행", "#하늘"],
+                hashtags: ["#여름", "#이너웨어", "#편안함"],
                 liked: false,
                 disliked: false,
-                thumbnail: "./video3_0_frame.png"
+                thumbnail: "./video03_0_frame.png"
+            },
+			{
+                src: "https://prod-usp-logs.s3.ap-northeast-2.amazonaws.com/test_media/video_04.mp4",
+                title: "무선이어폰은 이제~~",
+                productName: "무선이어폰",
+                productId:"",
+                username: "dhlee0320",
+                profileImage: "https://www.w3schools.com/w3images/avatar2.png",
+                hashtags: ["#음질", "#노이즈캔슬링", "#마감", "#편의성"],
+                liked: false,
+                disliked: false,
+                thumbnail: "./video04_0_frame.png"
             }
         ];
 
@@ -695,7 +704,7 @@
         function openPopup() {
             const shareOverlay = document.getElementById("shareOverlay");
             const sharePopup = document.querySelector(".share-popup");
-            
+
             shareOverlay.style.display = "flex";
             sharePopup.classList.remove("hide");
             sharePopup.classList.add("show");
@@ -706,7 +715,7 @@
         function closePopup() {
             const shareOverlay = document.getElementById("shareOverlay");
             const sharePopup = document.querySelector(".share-popup");
-            
+
             sharePopup.classList.remove("show");
             sharePopup.classList.add("hide");
             setTimeout(() => {
@@ -853,7 +862,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // 동영상 영역 클릭 이벤트 추가
             document.querySelectorAll('.video-wrapper').forEach(wrapper => {
-                wrapper.addEventListener('click', function() {
+                wrapper.addEventListener('click', function () {
                     const video = this.querySelector('video');
                     if (video) {
                         if (video.paused) {
@@ -867,7 +876,7 @@
 
             // 터치 이벤트 추가 (모바일 대응)
             document.querySelectorAll('.video-wrapper').forEach(wrapper => {
-                wrapper.addEventListener('touchend', function(e) {
+                wrapper.addEventListener('touchend', function (e) {
                     e.preventDefault(); // 기본 터치 동작 방지
                     const video = this.querySelector('video');
                     if (video) {
@@ -914,7 +923,6 @@
                     updateButtons();
                 }
                 else if (event.target.closest(".chatbot-button")) {
-                    const chatbotWrap = document.querySelector(".chatbot-wrap");
                     openChatbot();
                 }
                 else if (event.target.closest(".share-button")) {
@@ -931,6 +939,59 @@
                 });
             });
 
+            // 챗봇 내용 초기화 함수
+            function resetChatbot() {
+                const chatbotWrap = document.querySelector(".chatbot-wrap");
+                const chatbotPop = document.querySelector(".chatbot-pop");
+                
+                // 챗봇이 열려있으면 닫기
+                if (chatbotWrap.classList.contains("show-popup")) {
+                    chatbotWrap.classList.remove("show-popup");
+                    document.body.style.overflow = "";
+                    setTimeout(() => {
+                        chatbotWrap.style.display = "none";
+                        chatbotPop.style.display = "none";
+                    }, 300);
+                }
+                
+                // 챗봇 내용 초기화
+                const scrollBox = document.querySelector(".scrollBox");
+                if (scrollBox) {
+                    scrollBox.innerHTML = `
+                        <div class="by-date" id="startByDate">
+                            <div class="date" id="chatbotToday"></div>
+                            <div class="data-sources"></div>
+                            <div class="answer" dir="ltr">
+                                <code id="welcomeMessage">안녕하세요!
+                                    저는 유라클의 대화형 챗봇, MessageAI 입니다.
+                                    상품에 대해 궁금한 점은 언제든 물어보세요!    
+                                </code>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // 오늘 날짜 업데이트
+                    let today = new Date();
+                    document.getElementById("chatbotToday").innerHTML = formatDate(today);
+                    document.getElementById("startByDate").dataset.date = (today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate());
+                }
+                
+                // 입력 필드 초기화
+                const txt = document.getElementById("txt");
+                const btnSend = document.getElementById("btnSend");
+                if (txt) txt.value = "";
+                if (btnSend) {
+                    btnSend.className = "btn-add";
+                    btnSend.disabled = true;
+                }
+                
+                // 상태 변수 초기화
+                stop = true;
+                chatbotAnswerFlag = false;
+                lastReceivedData = [];
+                originQuery = "";
+            }
+
             // Swiper 초기화
             const swiper = new Swiper('.swiper', {
                 direction: 'vertical',
@@ -941,7 +1002,19 @@
                         let totalSlides = videos.length;
                         updateShareLink();
 
+                        // 챗봇 환영 메시지 업데이트
+                        const welcomeMessage = document.getElementById('welcomeMessage');
+                        if (welcomeMessage) {
+                            const currentProduct = videos[currentIndex].productName;
+                            welcomeMessage.innerHTML = `안녕하세요!
+                                저는 유라클의 대화형 챗봇, MessageAI 입니다.
+                                ${currentProduct}에 대해 궁금한 점은 언제든 물어보세요!`;
+                        }
+
                         document.querySelectorAll("video").forEach(video => video.pause());
+
+                        // 챗봇 내용 초기화
+                        resetChatbot();
 
                         setTimeout(() => {
                             let activeSlide = document.querySelector(".swiper-slide-active video");
@@ -1204,13 +1277,14 @@
         // 챗봇 시작
         function chatbotStart() {
             return new Promise((resolve, reject) => {
-                const url = 'https://athena.uracle.co.kr:19001/uracle/start';
+                // const url = 'https://athena.uracle.co.kr:19001/uracle/start';
+                const url = 'https://125.143.169.160/api/short-form/chat'
                 fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
+                    body: JSON.stringify({ // 데이터 변환 후 body에 추가
                         'secret': atob('MDU4N2M4NTIwNjZkMjc2ZmYzN2I1YTRkMjI2YjFhMWU=')
                     })
                 })
@@ -1223,20 +1297,9 @@
         }
 
         function getChatbotAnswer(txtValue, seeMore) {
-            Promise.resolve()
-                .then(() => {
-                    if (sessionId) {
-                        return Promise.resolve(sessionId)
-                    } else {
-                        return chatbotStart();
-                    }
-                })
-                .then((_sessionId) => {
-                    sessionId = _sessionId;
-                    if (connectRetry < MAX_RETRIES) {
-                        sendMessage(txtValue, seeMore);
-                    }
-                })
+            if (connectRetry < MAX_RETRIES) {
+                sendMessage(txtValue, seeMore);
+            }
         }
 
         // 챗봇 메시지 전달
@@ -1271,14 +1334,13 @@
             divAnswer.dir = "ltr";
             tempAnswer.className = "divAnswer";
             divAnswer.append(tempAnswer);
-            dataSources.innerHTML = ""; // 사용자 입력 메시지를 비움
+            dataSources.innerHTML = "";
 
-            let url = "https://athena.uracle.co.kr:19001/uracle/chat"
+            let url = "https://125.143.169.160/api/short-form/chat"
 
             const params = {
-                "session_id": sessionId,
+                "prodId": videos[currentIndex].productId,
                 "query": selectedKeyword + " " + sendText,
-                "see_more": seeMore,
             };
 
             if (seeMore) {
@@ -1294,14 +1356,17 @@
                     body: JSON.stringify(params)
                 });
 
+                console.log('=== API 응답 정보 ===');
+                console.log('응답 상태:', response.status);
+                console.log('응답 헤더:', response.headers);
+                console.log('응답 URL:', response.url);
+
                 if (!response.ok) {
                     const reader = response.body.getReader();
                     const utf8Decoder = new TextDecoder('utf-8');
                     const { value } = await reader.read();
                     if (response.status === 400) {
                         if (connectRetry < MAX_RETRIES) {
-                            sessionId = '';
-                            divAnswer ? divAnswer.remove() : "";
                             connectRetry++;
                             getChatbotAnswer(txt, seeMore);
                         } else {
@@ -1316,6 +1381,8 @@
                 const boundaryDecoder = new TextDecoder('iso-8859-1');
                 let done = false;
                 let buffer = new Uint8Array();
+
+                console.log('=== 스트림 읽기 시작 ===');
 
                 if (reader) {
                     chatbotAnswerFlag = true;
@@ -1365,9 +1432,9 @@
 
                 while (!done) {
                     if (stop) {
+                        console.log('사용자 중지 요청');
                         await reader.cancel();
                         break;
-                        stop = false;
                     }
                     const { value, done: isDone } = await reader.read();
                     done = isDone;
@@ -1379,44 +1446,48 @@
                         combined.set(value, buffer.length);
                         buffer = combined;
 
-                        const byteDec = boundaryDecoder.decode(buffer);
+                        // UTF-8 디코더로 변경
+                        const byteDec = utf8Decoder.decode(buffer);
+                        console.log('받은 데이터 청크:', byteDec);
 
-                        let dataBeginIdx = -1;
-                        let dataEndIdx = -1;
-
-                        if (byteDec.startsWith('data: {')) {
-                            dataBeginIdx = 0;
-                        } else {
-                            dataBeginIdx = byteDec.indexOf('\r\n\r\ndata: {');
-                            if (dataBeginIdx !== -1) {
-                                dataBeginIdx += 4;
+                        // 데이터 청크를 개별 메시지로 분리
+                        const messages = byteDec.split('\n');
+                        
+                        for (const message of messages) {
+                            if (message.trim() === '') continue;
+                            
+                            if (message === 'data:[DONE]') {
+                                console.log('스트림 종료');
+                                break;
                             }
-                        }
 
-                        if (dataBeginIdx !== -1) {
-                            dataEndIdx = byteDec.lastIndexOf('\r\n\r\n');
-                        }
-
-                        if (dataBeginIdx !== -1 && dataEndIdx !== -1) {
-                            const all_chunks = utf8Decoder.decode(buffer.subarray(dataBeginIdx, dataEndIdx));
-                            buffer = buffer.subarray(dataEndIdx + 4);
-                            for (chunk of all_chunks.split('\r\n\r\n')) {
-                                if (chunk.startsWith('data: ')) {
-                                    const chunk_data = JSON.parse(chunk.substring(6));
+                            if (message.startsWith('data:')) {
+                                try {
+                                    const jsonStr = message.substring(5).trim();
+                                    if (jsonStr === '') continue;
+                                    
+                                    const chunk_data = JSON.parse(jsonStr);
+                                    console.log('파싱된 JSON 데이터:', chunk_data);
 
                                     if (typeof chunk_data.text !== 'undefined') {
+                                        console.log('텍스트 응답:', chunk_data.text);
                                         let lastDivAnswer = await document.getElementsByClassName("divAnswer")[document.getElementsByClassName("divAnswer").length - 1];
                                         if (!seeMore) {
                                             chunk_data.text = chunk_data.text.trimStart();
                                         }
 
+                                        // 마지막 데이터만 업데이트
                                         lastReceivedData[lastReceivedData.length - 1] = chunk_data.text;
+                                        
+                                        // 중복 체크
+                                        if (lastReceivedData.length > 1 && lastReceivedData[lastReceivedData.length - 1] === lastReceivedData[lastReceivedData.length - 2]) {
+                                            lastReceivedData.pop(); // 중복된 데이터 제거
+                                        }
 
                                         const lastReceivedDataJoin = lastReceivedData.join('');
 
                                         const md = window.markdownit({
                                             highlight: function (str, lang) {
-                                                const innerHTML = md.render(str);
                                                 if (lang && hljs.getLanguage(lang)) {
                                                     try {
                                                         return '<pre class="hljs"><code style="white-space:pre-wrap !important">' +
@@ -1424,48 +1495,54 @@
                                                             '</code></pre>';
                                                     } catch (__) { }
                                                 }
-
-                                                return '<pre class="hljs"><code>' + innerHTML + '</code></pre>';
+                                                return '<pre class="hljs"><code>' + str + '</code></pre>';
                                             }
                                         });
 
                                         const markdownSource = lastReceivedDataJoin;
                                         const result = md.render(markdownSource);
-                                        lastDivAnswer.innerHTML = `<div>${result}</div>`
-                                        if (isAutoScrollEnabled) {
-                                            scrollBox.scrollTop = scrollBox.scrollHeight;
+                                        
+                                        // DOM 업데이트 전에 중복 체크
+                                        if (lastDivAnswer.innerHTML !== `<div>${result}</div>`) {
+                                            lastDivAnswer.innerHTML = `<div>${result}</div>`;
+                                            if (isAutoScrollEnabled) {
+                                                scrollBox.scrollTop = scrollBox.scrollHeight;
+                                            }
                                         }
                                     }
+                                    
                                     if (typeof chunk_data.end !== 'undefined') {
-                                        console.log(chunk_data.end);
+                                        console.log('응답 종료:', chunk_data);
                                         connectRetry = 0;
                                         chatbotAnswerFlag = false;
                                         btnSend.className = "btn-add";
                                         inputBox.value.trim() === '' ? btnSend.disabled = true : btnSend.disabled = false;
+                                        
                                         if (document.getElementsByClassName("btn-chat-more")[0]) {
                                             document.getElementsByClassName("btn-chat-more")[0].remove();
                                         }
+                                        
                                         if (chunk_data.finish_reason === 'length') {
                                             let btnMore = document.createElement("button");
                                             btnMore.textContent = '더보기';
                                             btnMore.className = "btn-chat-more";
                                             document.getElementsByClassName('answer')[document.getElementsByClassName('answer').length - 1].append(btnMore);
-                                            console.log("더보기");
                                         } else {
                                             originQuery = '';
                                         }
                                     }
+                                } catch (e) {
+                                    console.error('JSON 파싱 오류:', e);
+                                    console.error('문제가 된 메시지:', message);
                                 }
                             }
                         }
                     }
                 }
+                console.log('=== 스트림 읽기 완료 ===');
             } catch {
                 console.log("ERROR::::::")
                 if (connectRetry < MAX_RETRIES) {
-                    sessionId = '';
-                    divAnswer ? divAnswer.remove() : "";
-                    dataSources ? dataSources.remove() : "";
                     connectRetry++;
                     getChatbotAnswer(txt, seeMore);
                 } else {
@@ -1691,7 +1768,16 @@
         function openChatbot() {
             const chatbotWrap = document.querySelector(".chatbot-wrap");
             const chatbotPop = document.querySelector(".chatbot-pop");
-            
+
+            // 챗봇 환영 메시지 업데이트
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            if (welcomeMessage) {
+                const currentProduct = videos[currentIndex].productName;
+                welcomeMessage.innerHTML = `안녕하세요!
+                    저는 유라클의 대화형 챗봇, MessageAI 입니다.
+                    ${currentProduct}에 대해 궁금한 점은 언제든 물어보세요!`;
+            }
+
             chatbotPop.style.display = "flex";
             chatbotWrap.style.display = "flex";
             document.body.style.overflow = "hidden";
@@ -1704,16 +1790,16 @@
         function closeChatbot() {
             const chatbotWrap = document.querySelector(".chatbot-wrap");
             const chatbotPop = document.querySelector(".chatbot-pop");
-            
+
             chatbotWrap.classList.remove("show-popup");
             document.body.style.overflow = "";
-            
+
             stop = true;
             chatbotAnswerFlag = false;
             document.getElementById("txt").value = "";
             document.getElementById("btnSend").disabled = true;
             document.getElementById("btnSend").className = "btn-add";
-            
+
             setTimeout(() => {
                 chatbotWrap.style.display = "none";
                 chatbotPop.style.display = "none";
