@@ -1278,7 +1278,8 @@
         function chatbotStart() {
             return new Promise((resolve, reject) => {
                 // const url = 'https://athena.uracle.co.kr:19001/uracle/start';
-                const url = 'https://125.143.169.160/api/short-form/chat'
+                // const url = 'https://125.143.169.160/api/short-form/chat'
+                const url ='https://cafe24appdev.message-ai.net/api/short-form/chat'
                 fetch(url, {
                     method: 'POST',
                     headers: {
@@ -1336,7 +1337,7 @@
             divAnswer.append(tempAnswer);
             dataSources.innerHTML = "";
 
-            let url = "https://125.143.169.160/api/short-form/chat"
+            let url = "https://cafe24appdev.message-ai.net/api/short-form/chat"
 
             const params = {
                 "prodId": videos[currentIndex].productId,
