@@ -48,13 +48,13 @@ export class SwiperManager {
                 url = url.replace('100000', this.campaignId);
             }
 
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`API response error: ${response.status}`);
-            }
+            // const response = await fetch(url);
+            // if (!response.ok) {
+            //     throw new Error(`API response error: ${response.status}`);
+            // }
 
-            const data = await response.json();
-            console.log('API response:', data);
+            // const data = await response.json();
+            // console.log('API response:', data);
 
             this.slides = [
                 {
