@@ -32,6 +32,9 @@ export class SwiperManager {
         } else {
             console.warn('updateSlidesData function is not available yet');
         }
+
+        // 슬라이드 데이터 접근을 위한 전역 함수 등록
+        window.getAllSlidesData = () => this.getAllSlidesData();
     }
 
     // API로 슬라이드 데이터 가져오기
@@ -702,9 +705,6 @@ export class SwiperManager {
         // 현재 슬라이드 인덱스를 전역 변수에 업데이트
         window.updateCurrentSlideIndex(currentIndex);
 
-        console.log('Current active slide index:', currentIndex);
-        console.log('Current slide media type:', currentSlide.mediaTp);
-
         // 모든 비디오 일시정지
         document.querySelectorAll("video").forEach(video => video.pause());
 
@@ -715,17 +715,6 @@ export class SwiperManager {
 
         // 컨트롤 상태 업데이트
         this.updateControlsState(currentIndex);
-
-        // 슬라이드 변경 시 UI 초기화
-        if (typeof window.initializeUI === 'function') {
-            // 디바운스 처리
-            if (window.uiInitTimeout) {
-                clearTimeout(window.uiInitTimeout);
-            }
-            window.uiInitTimeout = setTimeout(() => {
-                window.initializeUI();
-            }, 100); // 100ms 딜레이
-        }
     }
 
     // 비디오 슬라이드 처리
@@ -866,5 +855,9 @@ export class SwiperManager {
                 element.style.opacity = '0.5';
             });
         });
+    }
+
+    getAllSlidesData() {
+        return this.slides;
     }
 }
