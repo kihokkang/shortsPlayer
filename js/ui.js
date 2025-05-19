@@ -10,8 +10,8 @@
     let fadeTimer = null; // fade 타이머를 위한 변수 추가
 
     // 1. Fade Slider 초기화
-    function initializeFadeSlider() {
-        const fadeImgs = document.querySelectorAll('.fadeImg img');
+    function initializeFadeSlider(index) {
+        const fadeImgs = document.querySelectorAll(`.swiper-slide:nth-child(${index + 1}) .fadeImg img`);
         if (fadeImgs.length === 0) return;
 
         // 이전 타이머가 있다면 제거
@@ -20,7 +20,7 @@
             fadeTimer = null;
         }
 
-        document.querySelectorAll('.fadeImg').forEach(el => {
+        document.querySelectorAll(`.swiper-slide:nth-child(${index + 1}) .fadeImg`).forEach(el => {
             el.style.position = 'relative';
         });
 
@@ -31,11 +31,11 @@
         });
 
         fadeImgs[current].style.opacity = 1;
-        nextFadeIn();
+        nextFadeIn(index);
     }
 
-    function nextFadeIn() {
-        const fadeImgs = document.querySelectorAll('.fadeImg img');
+    function nextFadeIn(index) {
+        const fadeImgs = document.querySelectorAll(`.swiper-slide:nth-child(${index + 1}) .fadeImg img`);
         if (fadeImgs.length === 0) return;
 
         // 이전 타이머가 있다면 제거
@@ -50,16 +50,27 @@
             current = current < imgNum - 1 ? current + 1 : 0;
             next = next < imgNum - 1 ? next + 1 : 0;
 
-            fadeTimer = setTimeout(nextFadeIn, fadeTime);
+            fadeTimer = setTimeout(nextFadeIn, fadeTime, index);
         }, interval);
     }
 
     // 2. Basic Slider 초기화
-    function initializeBasicSlider() {
-        const sliderInner = document.querySelector(".basicImg");
-        const images = document.querySelectorAll(".basic-slide");
-        const shortsCont = document.querySelector("#shorts-container");
+    function initializeBasicSlider(index) {
+        const sliderInner = document.querySelector(`.swiper-slide:nth-child(${index + 1}) .basicImg`);
+        const images = document.querySelectorAll(`.swiper-slide:nth-child(${index + 1}) .basic-slide`);
+        const shortsCont = document.querySelector(`.swiper-slide:nth-child(${index + 1}) .basic-container`);
         
+        // 디버깅을 위한 상세 로그 추가
+        console.log('Basic Slider Debug:', {
+            index,
+            slideSelector: `.swiper-slide:nth-child(${index + 1})`,
+            slideElement: document.querySelector(`.swiper-slide:nth-child(${index + 1})`),
+            sliderInner,
+            images: images.length,
+            shortsCont,
+            allBasicContainers: document.querySelectorAll('.basic-container')
+        });
+
         if (!sliderInner || !images.length || !shortsCont) {
             console.log('Required elements not found:', {
                 sliderInner: !!sliderInner,
@@ -70,7 +81,7 @@
         }
 
         try {
-            const slideWidth = shortsCont.offsetWidth;
+            const containerWidth = shortsCont.offsetWidth;
             let slideIndex = 1;
 
             // 기존 클론 제거
@@ -83,18 +94,18 @@
             firstClone.classList.add('clone-slide');
             lastClone.classList.add('clone-slide');
 
-            // 클론 추가 (순서 변경)
-            sliderInner.appendChild(firstClone); // 마지막 뒤에 첫 이미지 추가
-            sliderInner.insertBefore(lastClone, sliderInner.firstChild); // 첫 번째 요소 앞에 마지막 이미지 추가
+            // 클론 추가
+            sliderInner.insertBefore(lastClone, sliderInner.firstChild);
+            sliderInner.appendChild(firstClone);
 
-            // 전체 이미지 개수 계산
+            // 전체 이미지 개수 계산 (클론 포함)
             const totalImages = sliderInner.querySelectorAll(".basic-slide").length;
             
             // 슬라이더 너비 설정
-            sliderInner.style.width = `${slideWidth * totalImages}px`;
+            sliderInner.style.width = `${containerWidth * totalImages}px`;
             
-            // 초기 위치 설정 (1번째 실제 이미지로 이동)
-            sliderInner.style.transform = `translateX(-${slideWidth * slideIndex}px)`;
+            // 초기 위치 설정 (첫 번째 실제 이미지로 이동)
+            sliderInner.style.transform = `translateX(-${containerWidth}px)`;
 
             // 이전 인터벌 제거
             if (slideIntervals.basic) clearInterval(slideIntervals.basic);
@@ -103,16 +114,16 @@
             function moveToSlide() {
                 slideIndex++;
                 sliderInner.style.transition = "transform 0.4s ease-in-out";
-                sliderInner.style.transform = `translateX(-${slideWidth * slideIndex}px)`;
+                sliderInner.style.transform = `translateX(-${containerWidth * slideIndex}px)`;
 
                 // 클론 이미지에 도달한 후 위치 리셋
-                setTimeout(() => {
-                    if (slideIndex === totalImages - 1) {
+                if (slideIndex === totalImages - 1) {
+                    setTimeout(() => {
                         sliderInner.style.transition = "none";
                         slideIndex = 1;
-                        sliderInner.style.transform = `translateX(-${slideWidth * slideIndex}px)`;
-                    }
-                }, 400);
+                        sliderInner.style.transform = `translateX(-${containerWidth}px)`;
+                    }, 400);
+                }
             }
 
             // 새로운 인터벌 설정
@@ -120,23 +131,22 @@
 
         } catch (error) {
             console.error('Error initializing basic slider:', error);
-            // 에러 발생 시 디버깅을 위한 정보 출력
             console.log('Slider state:', {
                 sliderInnerHTML: sliderInner.innerHTML,
                 imagesCount: images.length,
-                slideWidth: shortsCont.offsetWidth
+                containerWidth: shortsCont ? shortsCont.offsetWidth : sliderInner.parentElement.offsetWidth
             });
         }
     }
 
     // 3. Cube Slider 초기화
-    function initializeCubeSlider() {
-        const $slides = $('#cubeSlider .cube-slide');
+    function initializeCubeSlider(index) {
+        const $slides = $(`.swiper-slide:nth-child(${index + 1}) #cubeSlider .cube-slide`);
         if ($slides.length === 0) return;
 
         let currentCubeIndex = 0;
         const totalSlides = $slides.length;
-        const $outer = $('#cubeSlider');
+        const $outer = $(`.swiper-slide:nth-child(${index + 1}) #cubeSlider`);
         let isAnimating = false;
 
         // 초기 상태 설정
@@ -245,8 +255,8 @@
     }
 
     // 4. Flip Slider 초기화
-    function initializeFlipSlider() {
-        const flipSlides = document.querySelectorAll(".flip-slide");
+    function initializeFlipSlider(index) {
+        const flipSlides = document.querySelectorAll(`.swiper-slide:nth-child(${index + 1}) .flip-slide`);
         if (flipSlides.length === 0) return;
 
         let flipIndex = 0;
@@ -275,8 +285,8 @@
     }
 
     // 5. Card Slider 초기화
-    function initializeCardSlider() {
-        const cardSlides = document.querySelectorAll('.card-slide');
+    function initializeCardSlider(index) {
+        const cardSlides = document.querySelectorAll(`.swiper-slide:nth-child(${index + 1}) .card-slide`);
         if (cardSlides.length === 0) return;
 
         let cardIndex = 0;
@@ -308,59 +318,38 @@
 
     // 메인 초기화 함수
     function initializeUI() {
-        // Swiper 인스턴스 가져오기
-        const swiper = document.querySelector('.swiper').swiper;
-        if (!swiper) return;
+        // 모든 슬라이드 데이터 가져오기
+        const slides = window.getAllSlidesData?.();
+        if (!slides) return;
 
-        // 현재 활성화된 슬라이드 찾기 (Swiper의 activeIndex 사용)
-        const activeSlide = swiper.slides[swiper.activeIndex];
-        if (!activeSlide) return;
+        // 각 슬라이드의 애니메이션 초기화
+        slides.forEach((slide, index) => {
+            if (slide.mediaTp === 'P') { // 이미지 타입인 경우
+                const sliderType = slide.imgDisplayTp;
+                if (!sliderType) return;
 
-        // 슬라이더 타입 확인 (여러 방법으로 시도)
-        let sliderType = null;
-        
-        // 1. img-temp의 id로 확인
-        const imgTemp = activeSlide.querySelector('.img-temp');
-        if (imgTemp && imgTemp.id) {
-            sliderType = imgTemp.id;
-        } else {
-            // 2. 컨테이너 클래스로 확인
-            const container = activeSlide.querySelector('.fadeImg, .basicImg, .cubeImg, .flipImg, .cardImg');
-            if (container) {
-                sliderType = container.className.split(' ')[0].replace('Img', 'Slider');
+                console.log(`Initializing slider type: ${sliderType} for slide ${index}`);
+
+                // 슬라이더 초기화
+                switch(sliderType) {
+                    case 'fadeSlider':
+                        initializeFadeSlider(index);
+                        break;
+                    case 'basicSlider':
+                        initializeBasicSlider(index);
+                        break;
+                    case 'cubeSlider':
+                        initializeCubeSlider(index);
+                        break;
+                    case 'flipCard':
+                        initializeFlipSlider(index);
+                        break;
+                    case 'cardSlider':
+                        initializeCardSlider(index);
+                        break;
+                }
             }
-        }
-
-        if (!sliderType) return; // 슬라이더 타입을 찾지 못하면 종료
-        
-        // 이미 초기화된 슬라이더 타입과 같으면 무시
-        if (currentSliderType === sliderType) return;
-        
-        // 이전 슬라이더 정리
-        if (currentSliderType) {
-            cleanupSlider(currentSliderType);
-        }
-
-        // 새로운 슬라이더 초기화
-        switch(sliderType) {
-            case 'fadeSlider':
-                initializeFadeSlider();
-                break;
-            case 'basicSlider':
-                initializeBasicSlider();
-                break;
-            case 'cubeSlider':
-                initializeCubeSlider();
-                break;
-            case 'flipCard':
-                initializeFlipSlider();
-                break;
-            case 'cardSlider':
-                initializeCardSlider();
-                break;
-        }
-
-        currentSliderType = sliderType;
+        });
     }
 
     // 슬라이더 정리 함수
