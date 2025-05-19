@@ -180,12 +180,6 @@
         window.addEventListener('load', function () {
             const script = document.createElement('script');
             script.src = './js/ui.js';
-            script.onload = function () {
-                // ui.js가 로드된 후 initializeUI 실행
-                if (typeof window.initializeUI === 'function') {
-                    window.initializeUI();
-                }
-            };
             document.body.appendChild(script);
         });
     </script>
