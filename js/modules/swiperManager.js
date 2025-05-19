@@ -491,145 +491,81 @@ export class SwiperManager {
         // HTML을 한번에 삽입
         wrapper.innerHTML = slidesHTML;
 
-        // 모든 이미지와 비디오가 로드될 때까지 기다린 후 UI 초기화
-        Promise.all([
-            ...Array.from(wrapper.querySelectorAll('img')).map(img => {
-                if (img.complete) {
-                    return Promise.resolve();
-                }
-                return new Promise(resolve => {
-                    img.onload = resolve;
-                    img.onerror = resolve; // 에러가 발생해도 계속 진행
-                });
-            }),
-            ...Array.from(wrapper.querySelectorAll('video')).map(video => {
-                return new Promise(resolve => {
-                    if (video.readyState >= 2) {
-                        resolve();
-                    } else {
-                        video.addEventListener('loadeddata', resolve, { once: true });
-                        video.addEventListener('error', resolve, { once: true });
+        // 리소스 로딩 상태 추적을 위한 변수
+        let resourcesLoaded = false;
+        let uiInitialized = false;
+
+        // 리소스 로딩 함수
+        const loadResources = () => {
+            return Promise.all([
+                ...Array.from(wrapper.querySelectorAll('img')).map(img => {
+                    if (img.complete) {
+                        return Promise.resolve();
                     }
-                });
-            })
-        ]).then(() => {
-            // 모든 리소스가 로드된 후 UI 초기화
-            if (typeof window.initializeUI === 'function') {
-                console.log('Initializing UI after all resources loaded');
-                window.initializeUI();
-            }
-        }).catch(error => {
-            console.error('Error loading resources:', error);
-            // 에러가 발생해도 UI 초기화 시도
-            if (typeof window.initializeUI === 'function') {
-                window.initializeUI();
-            }
-        });
-
-        // Preview 모드일 때 컨트롤 버튼들 숨기기
-        if (this.isPreview) {
-            this.hidePreviewControls();
-        }
-
-        // Plyr 초기화 및 이벤트 바인딩
-        document.querySelectorAll('.plyr').forEach((player, index) => {
-            console.log('Plyr 초기화 :', player.id);
-            const plyr = new Plyr(player, {
-                controls: ['play', 'progress', 'current-time', 'mute', 'fullscreen'],
-                autoplay: false,
-                muted: true,
-            });
-
-            // 비디오 컨테이너에 클릭 이벤트 추가
-            const videoContainer = player.closest('.video-wrapper');
-            if (videoContainer) {
-                videoContainer.addEventListener('click', (e) => {
-                    // 컨트롤 버튼 클릭은 제외
-                    if (!e.target.closest('.plyr__controls')) {
-                        console.log('Video container clicked');
-
-                        // 현재 재생 상태 확인하고 토글
-                        if (plyr.playing) {
-                            plyr.pause();
-                            // 수동 일시정지 시 상태 업데이트
-                            this.updateVideoStatus(videoContainer, 'pause');
+                    return new Promise(resolve => {
+                        img.onload = resolve;
+                        img.onerror = resolve;
+                    });
+                }),
+                ...Array.from(wrapper.querySelectorAll('video')).map(video => {
+                    return new Promise(resolve => {
+                        if (video.readyState >= 2) {
+                            resolve();
                         } else {
-                            plyr.play();
-                            // 수동 재생 시 상태 업데이트
-                            this.updateVideoStatus(videoContainer, 'play');
-                        }
-                    }
-                });
-            }
-
-            // Plyr 컨트롤 버튼 클릭 감지
-            plyr.on('ready', () => {
-                const controls = player.querySelector('.plyr__controls');
-                if (controls) {
-                    controls.addEventListener('click', (e) => {
-                        const button = e.target.closest('button');
-                        if (button && button.getAttribute('data-plyr') === 'play') {
-                            console.log('Play button clicked');
-                            // 버튼 클릭 후 상태 확인 (약간의 지연 필요)
-                            setTimeout(() => {
-                                if (plyr.playing) {
-                                    this.updateVideoStatus(videoContainer, 'play');
-                                } else {
-                                    this.updateVideoStatus(videoContainer, 'pause');
-                                }
-                            }, 50);
+                            video.addEventListener('loadeddata', resolve, { once: true });
+                            video.addEventListener('error', resolve, { once: true });
                         }
                     });
+                })
+            ]);
+        };
+
+        // UI 초기화 함수
+        const initializeUIWithRetry = (retryCount = 0) => {
+            if (uiInitialized) return;
+            
+            if (typeof window.initializeUI === 'function') {
+                try {
+                    console.log('Initializing UI...');
+                    window.initializeUI();
+                    uiInitialized = true;
+                    console.log('UI initialization completed');
+                } catch (error) {
+                    console.error('Error during UI initialization:', error);
+                    if (retryCount < 3) {  // 최대 3번까지 재시도
+                        console.log(`Retrying UI initialization (${retryCount + 1}/3)...`);
+                        setTimeout(() => initializeUIWithRetry(retryCount + 1), 500);
+                    }
                 }
+            } else {
+                console.warn('initializeUI function not found, retrying...');
+                if (retryCount < 3) {
+                    setTimeout(() => initializeUIWithRetry(retryCount + 1), 500);
+                }
+            }
+        };
+
+        // 리소스 로딩 시작
+        loadResources()
+            .then(() => {
+                console.log('All resources loaded');
+                resourcesLoaded = true;
+                initializeUIWithRetry();
+            })
+            .catch(error => {
+                console.error('Error loading resources:', error);
+                // 에러가 발생해도 UI 초기화 시도
+                resourcesLoaded = true;
+                initializeUIWithRetry();
             });
 
-            // 재생 이벤트 (상태 클래스 업데이트 제거)
-            plyr.on('play', () => {
-                console.log('Video play event');
-                if (videoContainer) {
-                    videoContainer.classList.remove('paused', 'ended', 'error');
-                    videoContainer.classList.add('playing');
-                }
-            });
-
-            // 일시정지 이벤트 (상태 클래스 업데이트 제거)
-            plyr.on('pause', () => {
-                console.log('Video pause event');
-                if (videoContainer) {
-                    videoContainer.classList.remove('playing', 'ended', 'error');
-                    videoContainer.classList.add('paused');
-                }
-            });
-
-            // 재생 완료 이벤트
-            plyr.on('ended', () => {
-                console.log('Video ended event');
-                if (videoContainer) {
-                    videoContainer.classList.remove('playing', 'paused', 'error');
-                    videoContainer.classList.add('ended');
-
-                    // 비디오를 처음부터 다시 재생
-                    setTimeout(() => {
-                        player.currentTime = 0;
-                        const playPromise = player.play();
-                        if (playPromise !== undefined) {
-                            playPromise.catch(error => {
-                                console.error('Error replaying video:', error);
-                            });
-                        }
-                    }, 100);
-                }
-            });
-
-            // 에러 이벤트
-            plyr.on('error', () => {
-                console.log('Video error event');
-                if (videoContainer) {
-                    videoContainer.classList.remove('playing', 'paused', 'ended');
-                    videoContainer.classList.add('error');
-                }
-            });
-        });
+        // 안전장치: 5초 후에도 초기화가 안 되면 강제로 시도
+        setTimeout(() => {
+            if (!uiInitialized) {
+                console.warn('UI initialization timeout, forcing initialization...');
+                initializeUIWithRetry();
+            }
+        }, 5000);
     }
 
     // 비디오 상태 업데이트 메서드 추가
