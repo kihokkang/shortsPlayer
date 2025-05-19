@@ -77,7 +77,7 @@ export class ShareModal {
         const shareLinkDiv = document.createElement("div");
         shareLinkDiv.className = "share-link";
         shareLinkDiv.innerHTML = `
-            <input type="text" id="shareUrl" readonly value="${currentSlide.src}" />
+            <input type="text" id="shareUrl" readonly value="${currentSlide.mediaList[0].serverUrl}${currentSlide.mediaList[0].filePath}" />
             <button>URL 복사</button>
         `;
         

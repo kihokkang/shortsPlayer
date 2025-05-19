@@ -30,14 +30,24 @@ export const createVideoSlide = (index, videoData) => `
         <div class="content-layout ${videoData.titlePosition === 'U' ? 'layout-1' : 'layout-2'}">
             <h1 class="short-title ${videoData.titleColor || ''}">${videoData.title}</h1>
             <div class="short-content">
-                <div class="hashtags">
-                    ${videoData.hashtags.map(tag => `
-                        <span onclick="onHashtagClick('${tag}')" data-tag="${tag}">${tag}</span>
-                    `).join('')}
-                </div>
-                <p class="cont-text ${videoData.contentColor || ''}">
-                    ${videoData.content}
-                </p>
+                ${videoData.reviewYn === 'Y' && videoData.reviewInfo ? `
+                    <div class="hashtags">
+                        ${videoData.reviewInfo.map(tag => `
+                            <span onclick="onHashtagClick('${tag.tag}')" data-tag="${tag.tag}" data-content="${tag.content}">
+                                ${tag.tag}
+                            </span>
+                        `).join('')}
+                    </div>
+                    <!-- 해시태그 클릭 시 표시되는 컨텐츠 -->
+                    <p class="cont-text ${videoData.contentColor || ''}" style="display: none;">
+                        ${videoData.reviewInfo[0]?.content || ''}
+                    </p>
+                ` : `
+                    <!-- 일반 컨텐츠 표시 -->
+                    <p class="cont-text ${videoData.contentColor || ''}">
+                        ${videoData.content || ''}
+                    </p>
+                `}
             </div>
         </div>
         

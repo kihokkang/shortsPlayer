@@ -725,7 +725,7 @@ export class Chatbot {
         const welcomeMessage = document.getElementById('welcomeMessage');
         if (welcomeMessage) {
             const currentIndex = window.currentSlideIndex;
-            const currentProduct = window.slidesData[currentIndex].productName;
+            const currentProduct = window.slidesData[currentIndex].productNm;
 
             welcomeMessage.innerHTML = `안녕하세요!
                 저는 유라클의 대화형 챗봇, MessageAI 입니다.

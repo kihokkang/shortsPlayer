@@ -15,162 +15,13 @@ export class SwiperManager {
         console.log('SwiperManager initialized');
         this.isPreview = options.isPreview || false;
         this.swiper = null;
-        // TO-DO : API 연동을 통해 가져옴
         this.slides = [];
-
-        // this.slides = [
-        //     // 비디오 슬라이드
-        //     {
-        //         type: 'video',
-        //         src: "https://prod-usp-logs.s3.ap-northeast-2.amazonaws.com/test_media/video_01.mp4",
-        //         title: "컨텐츠 타이틀 들어갑니다 최대 두 줄 가능합니다",
-        //         username: "user1234",
-        //         profileImage: "https://www.w3schools.com/w3images/avatar4.png",
-        //         hashtags: ["#태그글자", "#네글자로", "#들어가요", "#태그수는", "#최대몇개"],
-        //         liked: true,
-        //         thumbnail: "./video1_0_frame.png",
-        //         productName: "유라클 상품1",
-        //         shortsIdx:"1",
-        //         description: "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
-        //         layout: "layout-1"
-        //     },
-        //     {
-        //         type: 'video',
-        //         src: "https://prod-usp-logs.s3.ap-northeast-2.amazonaws.com/test_media/video_02.mp4",
-        //         title: "지속적인 촉촉함",
-        //         username: "soyoung1234",
-        //         profileImage: "https://www.w3schools.com/w3images/avatar4.png",
-        //         hashtags: ["#촉촉함", "#클렌징", "#필링"],
-        //         liked: false,
-        //         thumbnail: "./video2_0_frame.png",
-        //         productName: "유라클 상품2",
-        //         shortsIdx:"1",
-        //         description: "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
-        //         layout: "layout-2",
-        //         titleColor: "fc-green",
-        //         textColor: "fc-pink"
-        //     },
-        //     {
-        //         type: 'video',
-        //         src: "https://prod-usp-logs.s3.ap-northeast-2.amazonaws.com/test_media/video_03.mp4",
-        //         title: "지속적인 촉촉함",
-        //         username: "soyoung1234",
-        //         profileImage: "https://www.w3schools.com/w3images/avatar4.png",
-        //         hashtags: ["#촉촉함", "#클렌징", "#필링"],
-        //         liked: false,
-        //         thumbnail: "./video3_0_frame.png",
-        //         productName: "유라클 상품3",
-        //         shortsIdx:"1",
-        //         description: "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
-        //         layout: "layout-2",
-        //         titleColor: "fc-pink",
-        //         textColor: "fc-pink"
-        //     },
-        //     // 이미지 슬라이드
-        //     {
-        //         type: 'fade',
-        //         title: "페이드 인/아웃 슬라이더",
-        //         images: [
-        //             "./assets/img/test/image_01.png",
-        //             "./assets/img/test/image_02.png",
-        //             "./assets/img/test/image_03.jpg",
-        //             "./assets/img/test/image_04.png",
-        //             "./assets/img/test/image_05.jpg"
-        //         ],
-        //         hashtags: ["#촉촉함", "#클렌징", "#필링", "#필링", "#필링"],
-        //         productName: "유라클 상품4",
-        //         shortsIdx:"1",
-        //         description: "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
-        //         layout: "layout-1",
-        //         titleColor: "fc-pink",
-        //         textColor: "fc-pink",
-        //         contentClass: "pb-0"
-        //     },
-        //     {
-        //         type: 'basic',
-        //         title: "기본 가로 슬라이더",
-        //         images: [
-        //             "./assets/img/test/image_01.png",
-        //             "./assets/img/test/image_02.png",
-        //             "./assets/img/test/image_03.jpg",
-        //             "./assets/img/test/image_04.png",
-        //             "./assets/img/test/image_05.jpg"
-        //         ],
-        //         hashtags: ["#촉촉함", "#클렌징", "#필링", "#필링", "#필링"],
-        //         productName: "유라클 상품5",
-        //         shortsIdx:"1",
-        //         description: "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
-        //         layout: "layout-1",
-        //         titleColor: "fc-pink",
-        //         textColor: "fc-pink",
-        //         contentClass: "pb-0"
-        //     },
-        //     {
-        //         type: 'cube',
-        //         title: "큐브 박스 슬라이더",
-        //         images: [
-        //             "./assets/img/test/image_01.png",
-        //             "./assets/img/test/image_02.png",
-        //             "./assets/img/test/image_03.jpg",
-        //             "./assets/img/test/image_04.png",
-        //             "./assets/img/test/image_05.jpg"
-        //         ],
-        //         hashtags: ["#촉촉함", "#클렌징", "#필링", "#필링", "#필링"],
-        //         productName: "유라클 상품6",
-        //         shortsIdx:"1",
-        //         description: "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
-        //         layout: "layout-1",
-        //         titleColor: "fc-pink",
-        //         textColor: "fc-pink",
-        //         contentClass: "pb-0"
-        //     },
-        //     {
-        //         type: 'flip',
-        //         title: "플립 이펙트 슬라이더",
-        //         images: [
-        //             "./assets/img/test/image_01.png",
-        //             "./assets/img/test/image_02.png",
-        //             "./assets/img/test/image_03.jpg",
-        //             "./assets/img/test/image_04.png",
-        //             "./assets/img/test/image_05.jpg"
-        //         ],
-        //         hashtags: ["#촉촉함", "#클렌징", "#필링", "#필링", "#필링"],
-        //         productName: "유라클 상품7",
-        //         shortsIdx:"1",
-        //         description: "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
-        //         layout: "layout-1",
-        //         titleColor: "fc-pink",
-        //         textColor: "fc-pink",
-        //         contentClass: "pb-0"
-        //     },
-        //     {
-        //         type: 'card',
-        //         title: "카드 이펙트 슬라이더",
-        //         images: [
-        //             "./assets/img/test/image_01.png",
-        //             "./assets/img/test/image_02.png",
-        //             "./assets/img/test/image_03.jpg",
-        //             "./assets/img/test/image_04.png",
-        //             "./assets/img/test/image_05.jpg"
-        //         ],
-        //         hashtags: ["#촉촉함", "#클렌징", "#필링", "#필링", "#필링"],
-        //         productName: "유라클 상품8",
-        //         shortsIdx:"1",
-        //         description: "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
-        //         layout: "layout-1",
-        //         titleColor: "fc-pink",
-        //         textColor: "fc-pink",
-        //         contentClass: "pb-0"
-        //     }
-        // ];
         this.init();
     }
 
     async init() {
-
         // API로부터 데이터 가져오기
         await this.fetchSlidesData();
-
         this.initSlides();
         this.initSwiper();
         this.initControls();
@@ -194,13 +45,13 @@ export class SwiperManager {
                 url = url.replace('100000', this.campaignId);
             }
 
-            // const response = await fetch(url);
-            // if (!response.ok) {
-            //     throw new Error(`API response error: ${response.status}`);
-            // }
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`API response error: ${response.status}`);
+            }
 
-            // const data = await response.json();
-            // console.log('API response:', data);
+            const data = await response.json();
+            console.log('API response:', data);
 
             this.slides = [
                 {
@@ -212,7 +63,26 @@ export class SwiperManager {
                     "titleColor": "fc-green",
                     "titlePosition": "U",
                     "mediaTp": "M",
-                    "hashtags": ["#태그글자", "#네글자로", "#들어가요", "#태그수는", "#최대몇개"],
+                    "reviewInfo": [{
+                        "tag": "배송",
+                        "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
+                        "count": 35
+                    },
+                    {
+                        "tag": "품질",
+                        "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
+                        "count": 5
+                    },
+                    {
+                        "tag": "가격",
+                        "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
+                        "count": 41
+                    },
+                    {
+                        "tag": "디자인",
+                        "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                        "count": 6
+                    }],
                     "mediaList": [
                         {
                             "serverUrl": "https://insure.anetworks.co.kr",
@@ -221,7 +91,7 @@ export class SwiperManager {
                             "orderNo": 0
                         }
                     ],
-                    "reviewYn": "N",
+                    "reviewYn": "Y",
                     "content": "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
                     "contentColor": "fc-white",
                     "chatbotYn": "N"
@@ -235,7 +105,7 @@ export class SwiperManager {
                     "titleColor": "fc-green",
                     "titlePosition": "D",
                     "mediaTp": "M",
-                    "hashtags": ["#태그글자", "#네글자로", "#들어가요", "#태그수는", "#최대몇개"],
+                    "reviewInfo": ["#태그글자", "#네글자로", "#들어가요", "#태그수는", "#최대몇개"],
                     "mediaList": [
                         {
                             "serverUrl": "https://insure.anetworks.co.kr",
@@ -258,7 +128,7 @@ export class SwiperManager {
                     "titleColor": "fc-pink",
                     "titlePosition": "D",
                     "mediaTp": "M",
-                    "hashtags": ["#태그글자", "#네글자로", "#들어가요", "#태그수는", "#최대몇개"],
+                    "reviewInfo": ["#태그글자", "#네글자로", "#들어가요", "#태그수는", "#최대몇개"],
                     "mediaList": [
                         {
                             "serverUrl": "https://insure.anetworks.co.kr",
@@ -269,6 +139,319 @@ export class SwiperManager {
                     ],
                     "reviewYn": "N",
                     "content": "등록된 보조 설명글 있을 경우 노출 등록된",
+                    "contentColor": "fc-pink",
+                    "chatbotYn": "N"
+                },
+                {
+                    "shortsIdx": 100094,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품3",
+                    "productUrl": "https://google.com",
+                    "title": "지속적인 촉촉함",
+                    "titleColor": "fc-pink",
+                    "titlePosition": "D",
+                    "mediaTp": "P",
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_01.png",
+                            "orderNo": 0
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_02.png",
+                            "orderNo": 1
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_03.png",
+                            "orderNo": 2
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_04.png",
+                            "orderNo": 3
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_05.png",
+                            "orderNo": 4
+                        }
+                    ],
+                    "imgDisplayTp": "fadeSlider",
+                    "reviewYn": "Y",
+                    "contentOrg": "있을 수도 있고 없을 수도",
+                    "content": "있을 수도 있고 없을 수도",
+                    "reviewInfo": [
+                        {
+                            "tag": "태그글자",
+                            "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
+                            "count": 1
+                        },
+                        {
+                            "tag": "네글자로",
+                            "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
+                            "count": 2
+                        },
+                        {
+                            "tag": "들어가요",
+                            "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
+                            "count": 3
+                        },
+                        {
+                            "tag": "태그수는",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 4
+                        },
+                        {
+                            "tag": "최대몇개",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 5
+                        }
+                    ],
+                    "contentColor": "fc-pink",
+                    "chatbotYn": "N"
+                },
+                {
+                    "shortsIdx": 100095,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품3",
+                    "productUrl": "https://google.com",
+                    "title": "지속적인 촉촉함",
+                    "titleColor": "fc-green",
+                    "titlePosition": "U",
+                    "mediaTp": "P",
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_01.png",
+                            "orderNo": 0
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_02.png",
+                            "orderNo": 1
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_03.png",
+                            "orderNo": 2
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_04.png",
+                            "orderNo": 3
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_05.png",
+                            "orderNo": 4
+                        }
+                    ],
+                    "imgDisplayTp": "basicSlider",
+                    "reviewYn": "Y",
+                    "contentOrg": "있을 수도 있고 없을 수도",
+                    "content": "있을 수도 있고 없을 수도",
+                    "reviewInfo": [
+                        {
+                            "tag": "촉촉함",
+                            "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
+                            "count": 1
+                        },
+                        {
+                            "tag": "클렌징",
+                            "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
+                            "count": 2
+                        },
+                        {
+                            "tag": "필링",
+                            "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
+                            "count": 3
+                        }
+                    ],
+                    "contentColor": "fc-green",
+                    "chatbotYn": "N"
+                },
+                {
+                    "shortsIdx": 100096,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품3",
+                    "productUrl": "https://google.com",
+                    "title": "지속적인 촉촉함",
+                    "titleColor": "fc-pink",
+                    "titlePosition": "D",
+                    "mediaTp": "P",
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_01.png",
+                            "orderNo": 0
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_02.png",
+                            "orderNo": 1
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_03.png",
+                            "orderNo": 2
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_04.png",
+                            "orderNo": 3
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_05.png",
+                            "orderNo": 4
+                        }
+                    ],
+                    "imgDisplayTp": "cubeSlider",
+                    "reviewYn": "Y",
+                    "contentOrg": "있을 수도 있고 없을 수도",
+                    "content": "있을 수도 있고 없을 수도",
+                    "contentColor": "fc-pink",
+                    "chatbotYn": "N"
+                },
+                {
+                    "shortsIdx": 100097,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품3",
+                    "productUrl": "https://google.com",
+                    "title": "지속적인 촉촉함",
+                    "titleColor": "fc-green",
+                    "titlePosition": "U",
+                    "mediaTp": "P",
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_01.png",
+                            "orderNo": 0
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_02.png",
+                            "orderNo": 1
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_03.png",
+                            "orderNo": 2
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_04.png",
+                            "orderNo": 3
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_05.png",
+                            "orderNo": 4
+                        }
+                    ],
+                    "imgDisplayTp": "flipCard",
+                    "reviewYn": "Y",
+                    "contentOrg": "있을 수도 있고 없을 수도",
+                    "content": "있을 수도 있고 없을 수도",
+                    "reviewInfo": [
+                        {
+                            "tag": "촉촉함",
+                            "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
+                            "count": 1
+                        },
+                        {
+                            "tag": "클렌징",
+                            "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
+                            "count": 2
+                        },
+                        {
+                            "tag": "필링",
+                            "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
+                            "count": 3
+                        },
+                        {
+                            "tag": "태그수는",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 4
+                        },
+                        {
+                            "tag": "최대몇개",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 5
+                        }
+                    ],
+                    "contentColor": "fc-green",
+                    "chatbotYn": "N"
+                },
+                {
+                    "shortsIdx": 100098,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품3",
+                    "productUrl": "https://google.com",
+                    "title": "지속적인 촉촉함",
+                    "titleColor": "fc-pink",
+                    "titlePosition": "D",
+                    "mediaTp": "P",
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_01.png",
+                            "orderNo": 0
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_02.png",
+                            "orderNo": 1
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_03.png",
+                            "orderNo": 2
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_04.png",
+                            "orderNo": 3
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_05.png",
+                            "orderNo": 4
+                        }
+                    ],
+                    "imgDisplayTp": "cardSlider",
+                    "reviewYn": "Y",
+                    "contentOrg": "있을 수도 있고 없을 수도",
+                    "content": "있을 수도 있고 없을 수도",
+                    "reviewInfo": [
+                        {
+                            "tag": "촉촉함",
+                            "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
+                            "count": 1
+                        },
+                        {
+                            "tag": "클렌징",
+                            "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
+                            "count": 2
+                        },
+                        {
+                            "tag": "필링",
+                            "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
+                            "count": 3
+                        },
+                        {
+                            "tag": "필링",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 4
+                        },
+                        {
+                            "tag": "필링",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 5
+                        }
+                    ],
                     "contentColor": "fc-pink",
                     "chatbotYn": "N"
                 }
@@ -295,7 +478,6 @@ export class SwiperManager {
 
         // 먼저 모든 슬라이드의 HTML을 생성
         const slidesHTML = this.slides.map((slideData, index) => {
-            // mediaTp 값이 M일 경우 비디오 슬라이드, 그 외 이미지 슬라이드
             if (slideData.mediaTp === 'M') {
                 return createVideoSlide(index, slideData);
             } else {
@@ -305,6 +487,41 @@ export class SwiperManager {
 
         // HTML을 한번에 삽입
         wrapper.innerHTML = slidesHTML;
+
+        // 모든 이미지와 비디오가 로드될 때까지 기다린 후 UI 초기화
+        Promise.all([
+            ...Array.from(wrapper.querySelectorAll('img')).map(img => {
+                if (img.complete) {
+                    return Promise.resolve();
+                }
+                return new Promise(resolve => {
+                    img.onload = resolve;
+                    img.onerror = resolve; // 에러가 발생해도 계속 진행
+                });
+            }),
+            ...Array.from(wrapper.querySelectorAll('video')).map(video => {
+                return new Promise(resolve => {
+                    if (video.readyState >= 2) {
+                        resolve();
+                    } else {
+                        video.addEventListener('loadeddata', resolve, { once: true });
+                        video.addEventListener('error', resolve, { once: true });
+                    }
+                });
+            })
+        ]).then(() => {
+            // 모든 리소스가 로드된 후 UI 초기화
+            if (typeof window.initializeUI === 'function') {
+                console.log('Initializing UI after all resources loaded');
+                window.initializeUI();
+            }
+        }).catch(error => {
+            console.error('Error loading resources:', error);
+            // 에러가 발생해도 UI 초기화 시도
+            if (typeof window.initializeUI === 'function') {
+                window.initializeUI();
+            }
+        });
 
         // Preview 모드일 때 컨트롤 버튼들 숨기기
         if (this.isPreview) {
@@ -498,6 +715,17 @@ export class SwiperManager {
 
         // 컨트롤 상태 업데이트
         this.updateControlsState(currentIndex);
+
+        // 슬라이드 변경 시 UI 초기화
+        if (typeof window.initializeUI === 'function') {
+            // 디바운스 처리
+            if (window.uiInitTimeout) {
+                clearTimeout(window.uiInitTimeout);
+            }
+            window.uiInitTimeout = setTimeout(() => {
+                window.initializeUI();
+            }, 100); // 100ms 딜레이
+        }
     }
 
     // 비디오 슬라이드 처리
@@ -563,32 +791,37 @@ export class SwiperManager {
     // 해시태그 클릭 처리
     handleHashTagClick(tag) {
         console.log('HashTag clicked for tag:', tag);
-
+        
         const currentIndex = this.swiper ? this.swiper.activeIndex : 0;
         const currentSlide = document.querySelector(`.swiper-slide:nth-child(${currentIndex + 1})`);
-
+        
         if (currentSlide) {
             // 현재 슬라이드의 모든 해시태그 요소 찾기
             const allHashtagElements = currentSlide.querySelectorAll('.hashtags span');
             const clickedElement = currentSlide.querySelector(`.hashtags span[data-tag="${tag}"]`);
-
-            if (clickedElement) {
+            const contentElement = currentSlide.querySelector('.cont-text');
+            
+            if (clickedElement && contentElement) {
                 // 클릭된 해시태그가 이미 활성화되어 있는지 확인
                 const isAlreadyActive = clickedElement.classList.contains('active');
-
+                
                 // 모든 해시태그에서 active 클래스 제거
                 allHashtagElements.forEach(element => {
                     element.classList.remove('active');
                 });
-
+                
                 // 클릭된 해시태그가 활성화되어 있지 않았다면 활성화
                 if (!isAlreadyActive) {
                     clickedElement.classList.add('active');
+                    // content 표시 및 업데이트
+                    contentElement.style.display = 'block';
+                    contentElement.textContent = clickedElement.dataset.content;
                     // 슬라이드 데이터에 활성화된 해시태그 저장
                     this.slides[currentIndex].activeHashtag = tag;
                     console.log(`Hashtag ${tag} activated`);
                 } else {
                     // 이미 활성화된 해시태그를 다시 클릭하면 비활성화
+                    contentElement.style.display = 'none';
                     this.slides[currentIndex].activeHashtag = null;
                     console.log(`Hashtag ${tag} deactivated`);
                 }

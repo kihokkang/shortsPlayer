@@ -9,55 +9,80 @@
 
 export const createImageSlide = (index, slideData) => {
     const containerClass = {
-        'fade': 'fadeImg',
-        'basic': 'basicImg',
-        'cube': 'cubeImg',
-        'flip': 'flipImg',
-        'card': 'cardImg'
-    }[slideData.type];
+        'fadeSlider': 'fadeImg',
+        'basicSlider': 'basicImg',
+        'cubeSlider': 'cubeImg',
+        'flipCard': 'flipImg',
+        'cardSlider': 'cardImg'
+    }[slideData.imgDisplayTp];
 
-    const containerId = {
-        'fade': 'fadeSlider',
-        'basic': 'basicSlider',
-        'cube': 'cubeSlider',
-        'flip': 'flipCard',
-        'card': 'CardSlider'
-    }[slideData.type];
+    const containerId = slideData.imgDisplayTp;
 
     const slideClass = {
-        'fade': 'fade-slide',
-        'basic': 'basic-slide',
-        'cube': 'cube-slide',
-        'flip': 'flip-slide',
-        'card': 'card-slide'
-    }[slideData.type];
+        'fadeSlider': 'fade-slide',
+        'basicSlider': 'basic-slide',
+        'cubeSlider': 'cube-slide',
+        'flipCard': 'flip-slide',
+        'cardSlider': 'card-slide'
+    }[slideData.imgDisplayTp];
 
-    return `
-        <div class="swiper-slide" role="group">
+    // 컨테이너가 필요한 슬라이더 타입 확인
+    const needsContainer = ['basicSlider', 'cubeSlider', 'flipCard', 'cardSlider'].includes(slideData.imgDisplayTp);
+
+    // 컨테이너 클래스 결정
+    const getContainerClass = (type) => {
+        switch(type) {
+            case 'basicSlider': return 'basic-container';
+            case 'cubeSlider': return 'cube-container';
+            case 'flipCard': return 'flip-container';
+            case 'cardSlider': return 'card-container';
+            default: return '';
+        }
+    };
+
+    // 이미지 슬라이더 HTML 생성
+    const imageSliderHtml = `
+        ${needsContainer ? `<div class="${getContainerClass(slideData.imgDisplayTp)}">` : ''}
             <div class="img-temp ${containerClass}" id="${containerId}">
-                ${slideData.images.map((img, i) => `
+                ${slideData.mediaList.map((media, i) => `
                     <div class="${slideClass}">
-                        <img src="${img}" />
+                        <img src="${media.serverUrl}${media.filePath}" />
                     </div>
                 `).join('')}
             </div>
+        ${needsContainer ? '</div>' : ''}
+    `;
 
-            <div class="content-layout ${slideData.layout}">
-                <h1 class="short-title ${slideData.titleColor}">${slideData.title}</h1>
-                <div class="short-content ${slideData.contentClass}">
-                    <div class="hashtags">
-                        ${slideData.hashtags.map(tag => `
-                            <span onclick="onHashtagClick('${tag}')" data-tag="${tag}">${tag}</span>
-                        `).join('')}
-                    </div>
-                    <p class="cont-text ${slideData.textColor}">
-                        ${slideData.description}
-                    </p>
+    return `
+        <div class="swiper-slide" role="group">
+            ${imageSliderHtml}
+
+            <div class="content-layout ${slideData.titlePosition === 'U' ? 'layout-1' : 'layout-2'}">
+                <h1 class="short-title ${slideData.titleColor || ''}">${slideData.title}</h1>
+                <div class="short-content">
+                    ${slideData.reviewYn === 'Y' && slideData.reviewInfo ? `
+                        <div class="hashtags">
+                            ${slideData.reviewInfo.map(tag => `
+                                <span onclick="onHashtagClick('${tag.tag}')" data-tag="${tag.tag}" data-content="${tag.content}">
+                                    ${tag.tag}
+                                </span>
+                            `).join('')}
+                        </div>
+                        <!-- 해시태그 클릭 시 표시되는 컨텐츠 -->
+                        <p class="cont-text ${slideData.contentColor || ''}" style="display: none;">
+                            ${slideData.reviewInfo[0]?.content || ''}
+                        </p>
+                    ` : `
+                        <!-- 일반 컨텐츠 표시 -->
+                        <p class="cont-text ${slideData.contentColor || ''}">
+                            ${slideData.content || ''}
+                        </p>
+                    `}
                 </div>
             </div>
 
             <div class="controls">
-                <div class="control-icon like-button active" data-index="${index}">
+                <div class="control-icon like-button ${slideData.liked ? 'active' : ''}" data-index="${index}">
                     <span></span>
                     <p class="control-text">좋아요</p>
                 </div>
@@ -69,10 +94,12 @@ export const createImageSlide = (index, slideData) => {
                     <span></span>
                     <p class="control-text">공유</p>
                 </div>
-                <div class="control-icon chatbot-button" onclick="openChatbot()" data-index="${index}">
-                    <span></span>
-                    <p class="control-text">챗봇</p>
-                </div>
+                ${slideData.chatbotYn === 'Y' ? `
+                    <div class="control-icon chatbot-button" onclick="openChatbot()" data-index="${index}">
+                        <span></span>
+                        <p class="control-text">챗봇</p>
+                    </div>
+                ` : ''}
             </div>
         </div>
     `;
