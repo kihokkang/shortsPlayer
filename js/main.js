@@ -40,8 +40,8 @@ class ShortsPlayer {
         const searchParams = new URLSearchParams(window.location.search);
         return {
             previewYn: searchParams.get('previewYn') || 'N',
-            idx: searchParams.get('idx'), //숏츠 컨텐츠 고유ID
-            type : searchParams.get('type'), // shorts or shortform
+            idx: searchParams.get('idx') || '100005', //숏츠 컨텐츠 고유ID
+            type : searchParams.get('type') || 'shortform', // shorts or shortform
             closeButtonYn: searchParams.get('closeButtonYn') || 'Y'// Y or N
             // 필요한 다른 파라미터들도 추가 가능
             // videoId: searchParams.get('videoId'),
@@ -66,7 +66,9 @@ class ShortsPlayer {
 
         // Swiper 초기화 (preview 모드 전달)
         this.swiperManager = new SwiperManager({ 
-            isPreview: isPreviewMode
+            isPreview: isPreviewMode,
+            idx: this.urlParams.idx,
+            type: this.urlParams.type
         });
 
         // 공유 모달 초기화
@@ -135,6 +137,8 @@ class ShortsPlayer {
                 // 페이지 닫기 시도 (스크립트로 연 창에서만 작동)
                 if (window.opener) {
                     window.close();
+                }else if(document.getElementById('shortPopup')){ //KSY 새창 미리보기 시
+                    document.getElementById('shortPopup').hide();
                 } else {
                     // 일반 탭인 경우 이전 페이지로 이동
                     if (window.history.length > 1) {
