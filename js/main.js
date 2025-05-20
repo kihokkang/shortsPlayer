@@ -41,7 +41,8 @@ class ShortsPlayer {
         return {
             previewYn: searchParams.get('previewYn') || 'N',
             idx: searchParams.get('idx'), //숏츠 컨텐츠 고유ID
-            type : searchParams.get('type') // shorts or shortform
+            type : searchParams.get('type'), // shorts or shortform
+            closeButtonYn: searchParams.get('closeButtonYn') || 'Y'// Y or N
             // 필요한 다른 파라미터들도 추가 가능
             // videoId: searchParams.get('videoId'),
             // userId: searchParams.get('userId')
@@ -49,10 +50,11 @@ class ShortsPlayer {
     }
 
     init() {
-        // PC/모바일 환경에 따른 X 버튼 표시 설정
+        // PC/모바일 환경과 URL 파라미터에 따른 X 버튼 표시 설정
         const closeButton = document.getElementById('closeButton');
         if (closeButton) {
-            closeButton.style.display = this.isMobile() ? 'none' : 'block';
+            const shouldShowButton = !this.isMobile() && this.urlParams.closeButtonYn === 'Y';
+            closeButton.style.display = shouldShowButton ? 'block' : 'none';
         }
 
         // 전역 함수 등록
