@@ -1,0 +1,10 @@
+<!-- redirect.html -->
+<script>
+    const params = new URLSearchParams(location.search);
+    const to = params.get("to");
+    if (to && /^https?:\/\//.test(to)) {
+      location.href = to;
+    } else {
+      document.body.innerText = "잘못된 링크입니다.";
+    }
+  </script>
