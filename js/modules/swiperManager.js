@@ -45,23 +45,23 @@ export class SwiperManager {
             console.log('Fetching slides data from API...');
             let url = API_URLS.GET_SHORT_FORM_CONTENT;
 
-            // 프리뷰 모드일 경우 프리뷰 URL로 변경
-            if (this.isPreview) {
-                url = `${url}preview/${this.type}/${this.idx}`;
-            } else {
-                // url = `${url}${this.type}/${this.idx}`;
-                url = `${url}preview/${this.type}/${this.idx}`
-            }
+            // // 프리뷰 모드일 경우 프리뷰 URL로 변경
+            // if (this.isPreview) {
+            //     url = `${url}preview/${this.type}/${this.idx}`;
+            // } else {
+            //     // url = `${url}${this.type}/${this.idx}`;
+            //     url = `${url}preview/${this.type}/${this.idx}`
+            // }
 
-            console.log('Fetching content from:', url);
+            // console.log('Fetching content from:', url);
 
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`API response error: ${response.status}`);
-            }
+            // const response = await fetch(url);
+            // if (!response.ok) {
+            //     throw new Error(`API response error: ${response.status}`);
+            // }
 
-            const result = await response.json();
-            this.slides = result.data.shortsList;
+            // const result = await response.json();
+            // this.slides = result.data.shortsList;
             // 테스트 데이터
             window.updateCuid("testUserId");
             window.updateShortsSendSeq(100025);
@@ -69,413 +69,413 @@ export class SwiperManager {
             // window.updateCuid(result.data.cuid);
             // window.updateShortsSendSeq(result.data.shortsSendSeq);
             
-            console.log('API response:', result);
+            // console.log('API response:', result);
 
-            // this.slides = [
-            //     {
-            //         "shortsIdx": 100086,
-            //         "productCateIdx": 1,
-            //         "productNm": "유라클 상품1",
-            //         "productUrl": "https://google.com",
-            //         "title": "컨텐츠 타이틀 들어갑니다 최대 두 줄 가능합니다",
-            //         "titleColor": "fc-green",
-            //         "titlePosition": "U",
-            //         "mediaTp": "M",
-            //         "reviewInfo": [{
-            //             "tag": "배송",
-            //             "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
-            //             "count": 35
-            //         },
-            //         {
-            //             "tag": "품질",
-            //             "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
-            //             "count": 5
-            //         },
-            //         {
-            //             "tag": "가격",
-            //             "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
-            //             "count": 41
-            //         },
-            //         {
-            //             "tag": "디자인",
-            //             "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
-            //             "count": 6
-            //         }],
-            //         "mediaList": [
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/video/video_01.mp4",
-            //                 "thumbnailPath": "/resources/messageai/sample/video/thumbnail_video_01.png",
-            //                 "orderNo": 0
-            //             }
-            //         ],
-            //         "reviewYn": "Y",
-            //         "content": "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
-            //         "contentColor": "fc-white",
-            //         "chatbotYn": "N"
-            //     },
-            //     {
-            //         "shortsIdx": 100087,
-            //         "productCateIdx": 1,
-            //         "productNm": "유라클 상품2",
-            //         "productUrl": "https://google.com",
-            //         "title": "지속적인 촉촉함",
-            //         "titleColor": "fc-green",
-            //         "titlePosition": "D",
-            //         "mediaTp": "M",
-            //         "reviewInfo": ["#태그글자", "#네글자로", "#들어가요", "#태그수는", "#최대몇개"],
-            //         "mediaList": [
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/video/video_02.mp4",
-            //                 "thumbnailPath": "/resources/messageai/sample/video/thumbnail_video_02.png",
-            //                 "orderNo": 0
-            //             }
-            //         ],
-            //         "reviewYn": "N",
-            //         "content": "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
-            //         "contentColor": "fc-pink",
-            //         "chatbotYn": "Y"
-            //     },
-            //     {
-            //         "shortsIdx": 100088,
-            //         "productCateIdx": 1,
-            //         "productNm": "유라클 상품3",
-            //         "productUrl": "https://google.com",
-            //         "title": "컨텐츠 타이틀 들어갑니다 최대 두 줄 가능합니다",
-            //         "titleColor": "fc-pink",
-            //         "titlePosition": "D",
-            //         "mediaTp": "M",
-            //         "reviewInfo": ["#태그글자", "#네글자로", "#들어가요", "#태그수는", "#최대몇개"],
-            //         "mediaList": [
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/video/video_03.mp4",
-            //                 "thumbnailPath": "/resources/messageai/sample/video/thumbnail_video_03.png",
-            //                 "orderNo": 0
-            //             }
-            //         ],
-            //         "reviewYn": "N",
-            //         "content": "등록된 보조 설명글 있을 경우 노출 등록된",
-            //         "contentColor": "fc-pink",
-            //         "chatbotYn": "N"
-            //     },
-            //     {
-            //         "shortsIdx": 100094,
-            //         "productCateIdx": 1,
-            //         "productNm": "유라클 상품3",
-            //         "productUrl": "https://google.com",
-            //         "title": "지속적인 촉촉함",
-            //         "titleColor": "fc-pink",
-            //         "titlePosition": "D",
-            //         "mediaTp": "P",
-            //         "mediaList": [
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_01.png",
-            //                 "orderNo": 0
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_02.png",
-            //                 "orderNo": 1
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_03.png",
-            //                 "orderNo": 2
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_04.png",
-            //                 "orderNo": 3
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_05.png",
-            //                 "orderNo": 4
-            //             }
-            //         ],
-            //         "imgDisplayTp": "fadeSlider",
-            //         "reviewYn": "Y",
-            //         "contentOrg": "있을 수도 있고 없을 수도",
-            //         "content": "있을 수도 있고 없을 수도",
-            //         "reviewInfo": [
-            //             {
-            //                 "tag": "태그글자",
-            //                 "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
-            //                 "count": 1
-            //             },
-            //             {
-            //                 "tag": "네글자로",
-            //                 "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
-            //                 "count": 2
-            //             },
-            //             {
-            //                 "tag": "들어가요",
-            //                 "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
-            //                 "count": 3
-            //             },
-            //             {
-            //                 "tag": "태그수는",
-            //                 "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
-            //                 "count": 4
-            //             },
-            //             {
-            //                 "tag": "최대몇개",
-            //                 "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
-            //                 "count": 5
-            //             }
-            //         ],
-            //         "contentColor": "fc-pink",
-            //         "chatbotYn": "N"
-            //     },
-            //     {
-            //         "shortsIdx": 100095,
-            //         "productCateIdx": 1,
-            //         "productNm": "유라클 상품3",
-            //         "productUrl": "https://google.com",
-            //         "title": "지속적인 촉촉함",
-            //         "titleColor": "fc-green",
-            //         "titlePosition": "U",
-            //         "mediaTp": "P",
-            //         "mediaList": [
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_01.png",
-            //                 "orderNo": 0
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_02.png",
-            //                 "orderNo": 1
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_03.png",
-            //                 "orderNo": 2
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_04.png",
-            //                 "orderNo": 3
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_05.png",
-            //                 "orderNo": 4
-            //             }
-            //         ],
-            //         "imgDisplayTp": "basicSlider",
-            //         "reviewYn": "Y",
-            //         "contentOrg": "있을 수도 있고 없을 수도",
-            //         "content": "있을 수도 있고 없을 수도",
-            //         "reviewInfo": [
-            //             {
-            //                 "tag": "촉촉함",
-            //                 "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
-            //                 "count": 1
-            //             },
-            //             {
-            //                 "tag": "클렌징",
-            //                 "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
-            //                 "count": 2
-            //             },
-            //             {
-            //                 "tag": "필링",
-            //                 "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
-            //                 "count": 3
-            //             }
-            //         ],
-            //         "contentColor": "fc-green",
-            //         "chatbotYn": "N"
-            //     },
-            //     {
-            //         "shortsIdx": 100096,
-            //         "productCateIdx": 1,
-            //         "productNm": "유라클 상품3",
-            //         "productUrl": "https://google.com",
-            //         "title": "지속적인 촉촉함",
-            //         "titleColor": "fc-pink",
-            //         "titlePosition": "D",
-            //         "mediaTp": "P",
-            //         "mediaList": [
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_01.png",
-            //                 "orderNo": 0
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_02.png",
-            //                 "orderNo": 1
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_03.png",
-            //                 "orderNo": 2
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_04.png",
-            //                 "orderNo": 3
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_05.png",
-            //                 "orderNo": 4
-            //             }
-            //         ],
-            //         "imgDisplayTp": "cubeSlider",
-            //         "reviewYn": "Y",
-            //         "contentOrg": "있을 수도 있고 없을 수도",
-            //         "content": "있을 수도 있고 없을 수도",
-            //         "contentColor": "fc-pink",
-            //         "chatbotYn": "N"
-            //     },
-            //     {
-            //         "shortsIdx": 100097,
-            //         "productCateIdx": 1,
-            //         "productNm": "유라클 상품3",
-            //         "productUrl": "https://google.com",
-            //         "title": "지속적인 촉촉함",
-            //         "titleColor": "fc-green",
-            //         "titlePosition": "U",
-            //         "mediaTp": "P",
-            //         "mediaList": [
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_01.png",
-            //                 "orderNo": 0
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_02.png",
-            //                 "orderNo": 1
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_03.png",
-            //                 "orderNo": 2
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_04.png",
-            //                 "orderNo": 3
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_05.png",
-            //                 "orderNo": 4
-            //             }
-            //         ],
-            //         "imgDisplayTp": "flipCard",
-            //         "reviewYn": "Y",
-            //         "contentOrg": "있을 수도 있고 없을 수도",
-            //         "content": "있을 수도 있고 없을 수도",
-            //         "reviewInfo": [
-            //             {
-            //                 "tag": "촉촉함",
-            //                 "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
-            //                 "count": 1
-            //             },
-            //             {
-            //                 "tag": "클렌징",
-            //                 "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
-            //                 "count": 2
-            //             },
-            //             {
-            //                 "tag": "필링",
-            //                 "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
-            //                 "count": 3
-            //             },
-            //             {
-            //                 "tag": "태그수는",
-            //                 "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
-            //                 "count": 4
-            //             },
-            //             {
-            //                 "tag": "최대몇개",
-            //                 "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
-            //                 "count": 5
-            //             }
-            //         ],
-            //         "contentColor": "fc-green",
-            //         "chatbotYn": "N"
-            //     },
-            //     {
-            //         "shortsIdx": 100098,
-            //         "productCateIdx": 1,
-            //         "productNm": "유라클 상품3",
-            //         "productUrl": "https://google.com",
-            //         "title": "지속적인 촉촉함",
-            //         "titleColor": "fc-pink",
-            //         "titlePosition": "D",
-            //         "mediaTp": "P",
-            //         "mediaList": [
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_01.png",
-            //                 "orderNo": 0
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_02.png",
-            //                 "orderNo": 1
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_03.png",
-            //                 "orderNo": 2
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_04.png",
-            //                 "orderNo": 3
-            //             },
-            //             {
-            //                 "serverUrl": "https://insure.anetworks.co.kr",
-            //                 "filePath": "/resources/messageai/sample/image/image_05.png",
-            //                 "orderNo": 4
-            //             }
-            //         ],
-            //         "imgDisplayTp": "cardSlider",
-            //         "reviewYn": "Y",
-            //         "contentOrg": "있을 수도 있고 없을 수도",
-            //         "content": "있을 수도 있고 없을 수도",
-            //         "reviewInfo": [
-            //             {
-            //                 "tag": "촉촉함",
-            //                 "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
-            //                 "count": 1
-            //             },
-            //             {
-            //                 "tag": "클렌징",
-            //                 "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
-            //                 "count": 2
-            //             },
-            //             {
-            //                 "tag": "필링",
-            //                 "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
-            //                 "count": 3
-            //             },
-            //             {
-            //                 "tag": "필링",
-            //                 "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
-            //                 "count": 4
-            //             },
-            //             {
-            //                 "tag": "필링",
-            //                 "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
-            //                 "count": 5
-            //             }
-            //         ],
-            //         "contentColor": "fc-pink",
-            //         "chatbotYn": "N"
-            //     }
-            // ]
+            this.slides = [
+                {
+                    "shortsIdx": 100086,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품1",
+                    "productUrl": "https://google.com",
+                    "title": "컨텐츠 타이틀 들어갑니다 최대 두 줄 가능합니다",
+                    "titleColor": "fc-green",
+                    "titlePosition": "U",
+                    "mediaTp": "M",
+                    "reviewInfo": [{
+                        "tag": "배송",
+                        "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
+                        "count": 35
+                    },
+                    {
+                        "tag": "품질",
+                        "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
+                        "count": 5
+                    },
+                    {
+                        "tag": "가격",
+                        "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
+                        "count": 41
+                    },
+                    {
+                        "tag": "디자인",
+                        "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                        "count": 6
+                    }],
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/video/video_01.mp4",
+                            "thumbnailPath": "/resources/messageai/sample/video/thumbnail_video_01.png",
+                            "orderNo": 0
+                        }
+                    ],
+                    "reviewYn": "Y",
+                    "content": "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
+                    "contentColor": "fc-white",
+                    "chatbotYn": "N"
+                },
+                {
+                    "shortsIdx": 100087,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품2",
+                    "productUrl": "https://google.com",
+                    "title": "지속적인 촉촉함",
+                    "titleColor": "fc-green",
+                    "titlePosition": "D",
+                    "mediaTp": "M",
+                    "reviewInfo": ["#태그글자", "#네글자로", "#들어가요", "#태그수는", "#최대몇개"],
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/video/video_02.mp4",
+                            "thumbnailPath": "/resources/messageai/sample/video/thumbnail_video_02.png",
+                            "orderNo": 0
+                        }
+                    ],
+                    "reviewYn": "N",
+                    "content": "등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출 등록된 보조 설명글 있을 경우 노출",
+                    "contentColor": "fc-pink",
+                    "chatbotYn": "Y"
+                },
+                {
+                    "shortsIdx": 100088,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품3",
+                    "productUrl": "https://google.com",
+                    "title": "컨텐츠 타이틀 들어갑니다 최대 두 줄 가능합니다",
+                    "titleColor": "fc-pink",
+                    "titlePosition": "D",
+                    "mediaTp": "M",
+                    "reviewInfo": ["#태그글자", "#네글자로", "#들어가요", "#태그수는", "#최대몇개"],
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/video/video_03.mp4",
+                            "thumbnailPath": "/resources/messageai/sample/video/thumbnail_video_03.png",
+                            "orderNo": 0
+                        }
+                    ],
+                    "reviewYn": "N",
+                    "content": "등록된 보조 설명글 있을 경우 노출 등록된",
+                    "contentColor": "fc-pink",
+                    "chatbotYn": "N"
+                },
+                {
+                    "shortsIdx": 100094,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품3",
+                    "productUrl": "https://google.com",
+                    "title": "지속적인 촉촉함",
+                    "titleColor": "fc-pink",
+                    "titlePosition": "D",
+                    "mediaTp": "P",
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_01.png",
+                            "orderNo": 0
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_02.png",
+                            "orderNo": 1
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_03.png",
+                            "orderNo": 2
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_04.png",
+                            "orderNo": 3
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_05.png",
+                            "orderNo": 4
+                        }
+                    ],
+                    "imgDisplayTp": "fadeSlider",
+                    "reviewYn": "Y",
+                    "contentOrg": "있을 수도 있고 없을 수도",
+                    "content": "있을 수도 있고 없을 수도",
+                    "reviewInfo": [
+                        {
+                            "tag": "태그글자",
+                            "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
+                            "count": 1
+                        },
+                        {
+                            "tag": "네글자로",
+                            "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
+                            "count": 2
+                        },
+                        {
+                            "tag": "들어가요",
+                            "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
+                            "count": 3
+                        },
+                        {
+                            "tag": "태그수는",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 4
+                        },
+                        {
+                            "tag": "최대몇개",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 5
+                        }
+                    ],
+                    "contentColor": "fc-pink",
+                    "chatbotYn": "N"
+                },
+                {
+                    "shortsIdx": 100095,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품3",
+                    "productUrl": "https://google.com",
+                    "title": "지속적인 촉촉함",
+                    "titleColor": "fc-green",
+                    "titlePosition": "U",
+                    "mediaTp": "P",
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_01.png",
+                            "orderNo": 0
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_02.png",
+                            "orderNo": 1
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_03.png",
+                            "orderNo": 2
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_04.png",
+                            "orderNo": 3
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_05.png",
+                            "orderNo": 4
+                        }
+                    ],
+                    "imgDisplayTp": "basicSlider",
+                    "reviewYn": "Y",
+                    "contentOrg": "있을 수도 있고 없을 수도",
+                    "content": "있을 수도 있고 없을 수도",
+                    "reviewInfo": [
+                        {
+                            "tag": "촉촉함",
+                            "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
+                            "count": 1
+                        },
+                        {
+                            "tag": "클렌징",
+                            "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
+                            "count": 2
+                        },
+                        {
+                            "tag": "필링",
+                            "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
+                            "count": 3
+                        }
+                    ],
+                    "contentColor": "fc-green",
+                    "chatbotYn": "N"
+                },
+                {
+                    "shortsIdx": 100096,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품3",
+                    "productUrl": "https://google.com",
+                    "title": "지속적인 촉촉함",
+                    "titleColor": "fc-pink",
+                    "titlePosition": "D",
+                    "mediaTp": "P",
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_01.png",
+                            "orderNo": 0
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_02.png",
+                            "orderNo": 1
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_03.png",
+                            "orderNo": 2
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_04.png",
+                            "orderNo": 3
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_05.png",
+                            "orderNo": 4
+                        }
+                    ],
+                    "imgDisplayTp": "cubeSlider",
+                    "reviewYn": "Y",
+                    "contentOrg": "있을 수도 있고 없을 수도",
+                    "content": "있을 수도 있고 없을 수도",
+                    "contentColor": "fc-pink",
+                    "chatbotYn": "N"
+                },
+                {
+                    "shortsIdx": 100097,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품3",
+                    "productUrl": "https://google.com",
+                    "title": "지속적인 촉촉함",
+                    "titleColor": "fc-green",
+                    "titlePosition": "U",
+                    "mediaTp": "P",
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_01.png",
+                            "orderNo": 0
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_02.png",
+                            "orderNo": 1
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_03.png",
+                            "orderNo": 2
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_04.png",
+                            "orderNo": 3
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_05.png",
+                            "orderNo": 4
+                        }
+                    ],
+                    "imgDisplayTp": "flipCard",
+                    "reviewYn": "Y",
+                    "contentOrg": "있을 수도 있고 없을 수도",
+                    "content": "있을 수도 있고 없을 수도",
+                    "reviewInfo": [
+                        {
+                            "tag": "촉촉함",
+                            "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
+                            "count": 1
+                        },
+                        {
+                            "tag": "클렌징",
+                            "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
+                            "count": 2
+                        },
+                        {
+                            "tag": "필링",
+                            "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
+                            "count": 3
+                        },
+                        {
+                            "tag": "태그수는",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 4
+                        },
+                        {
+                            "tag": "최대몇개",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 5
+                        }
+                    ],
+                    "contentColor": "fc-green",
+                    "chatbotYn": "N"
+                },
+                {
+                    "shortsIdx": 100098,
+                    "productCateIdx": 1,
+                    "productNm": "유라클 상품3",
+                    "productUrl": "https://google.com",
+                    "title": "지속적인 촉촉함",
+                    "titleColor": "fc-pink",
+                    "titlePosition": "D",
+                    "mediaTp": "P",
+                    "mediaList": [
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_01.png",
+                            "orderNo": 0
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_02.png",
+                            "orderNo": 1
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_03.png",
+                            "orderNo": 2
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_04.png",
+                            "orderNo": 3
+                        },
+                        {
+                            "serverUrl": "https://insure.anetworks.co.kr",
+                            "filePath": "/resources/messageai/sample/image/image_05.png",
+                            "orderNo": 4
+                        }
+                    ],
+                    "imgDisplayTp": "cardSlider",
+                    "reviewYn": "Y",
+                    "contentOrg": "있을 수도 있고 없을 수도",
+                    "content": "있을 수도 있고 없을 수도",
+                    "reviewInfo": [
+                        {
+                            "tag": "촉촉함",
+                            "content": "배송이 빠르고 편리하다는 평가가 많습니다|제품의 품질도 만족스럽다는 의견이 많습니다|많은 고객들이 빠른 배송에 대해 감사의 뜻을 전하고 있습니다",
+                            "count": 1
+                        },
+                        {
+                            "tag": "클렌징",
+                            "content": "이 제품의 품질은 매우 우수합니다|작년에 이어 올해도 구매하는 것이 적절하다고 생각합니다|단, 제품이 생각보다 얇아 두툼한 것을 원했던 사용자에게는 다소 실망스러울 수 있습니다",
+                            "count": 2
+                        },
+                        {
+                            "tag": "필링",
+                            "content": "제품의 가격 대비 품질이 매우 우수하다고 평가받고 있습니다|많은 사용자들이 저렴한 가격에 만족스러운 제품을 구매했다고 언급했습니다|가격 대비 성능이 뛰어나다는 점에서 가성비가 좋다고 느껴진다는 의견이 많습니다",
+                            "count": 3
+                        },
+                        {
+                            "tag": "필링",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 4
+                        },
+                        {
+                            "tag": "필링",
+                            "content": "디자인이 깔끔하고 예쁘다고 평가받았습니다. 색상이 무난하고 좋으며, 세탁 후에도 늘어지지 않아 만족스러운 품질로 여겨집니다.",
+                            "count": 5
+                        }
+                    ],
+                    "contentColor": "fc-pink",
+                    "chatbotYn": "N"
+                }
+            ]
 
-            // // API 응답 형식에 따라 이 부분은 조정 필요
+            // API 응답 형식에 따라 이 부분은 조정 필요
             // if (data && data.data && Array.isArray(data.data.contents)) {
             //     this.slides = data.data.contents.map(item => this.mapApiDataToSlide(item));
             // } else {
