@@ -390,7 +390,33 @@
     window.initializeUI = initializeUI;
 })();
 
+// iOS 키패드 처리
+document.addEventListener('DOMContentLoaded', function() {
+    const txt = document.getElementById('txt');
+    const chatbotWrap = document.getElementById('chatbotWrap');
+    
+    // 포커스 시 스크롤 처리
+    txt.addEventListener('focus', function() {
+        setTimeout(() => {
+            const rect = txt.getBoundingClientRect();
+            const scrollAmount = rect.top - (window.innerHeight - rect.height - 20);
+            if (scrollAmount > 0) {
+                window.scrollTo({
+                    top: window.scrollY + scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        }, 300); // 키패드가 완전히 올라온 후 스크롤
+    });
 
+    // 블러 시 스크롤 복원
+    txt.addEventListener('blur', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
 
 // 3. 큐브박스 (jquery)
 $(function () {
@@ -553,32 +579,27 @@ cards();
 // 자동 슬라이드 실행 (3초 간격)
 setInterval(cardNextSlide, 3000);
 
+// 뷰포트 높이 조정
+function setViewportHeight() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
 
+// 초기 설정
+setViewportHeight();
 
+// 리사이즈 및 방향 변경 시 높이 재설정
+window.addEventListener('resize', setViewportHeight);
+window.addEventListener('orientationchange', () => {
+    setTimeout(setViewportHeight, 100);
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// iOS Safari에서 스크롤 시 높이 재설정
+let lastScrollTop = 0;
+window.addEventListener('scroll', () => {
+    const st = window.pageYOffset || document.documentElement.scrollTop;
+    if (st > lastScrollTop) {
+        setViewportHeight();
+    }
+    lastScrollTop = st <= 0 ? 0 : st;
+}, false);
