@@ -578,28 +578,3 @@ cards();
 
 // 자동 슬라이드 실행 (3초 간격)
 setInterval(cardNextSlide, 3000);
-
-// 뷰포트 높이 조정
-function setViewportHeight() {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
-
-// 초기 설정
-setViewportHeight();
-
-// 리사이즈 및 방향 변경 시 높이 재설정
-window.addEventListener('resize', setViewportHeight);
-window.addEventListener('orientationchange', () => {
-    setTimeout(setViewportHeight, 100);
-});
-
-// iOS Safari에서 스크롤 시 높이 재설정
-let lastScrollTop = 0;
-window.addEventListener('scroll', () => {
-    const st = window.pageYOffset || document.documentElement.scrollTop;
-    if (st > lastScrollTop) {
-        setViewportHeight();
-    }
-    lastScrollTop = st <= 0 ? 0 : st;
-}, false);
