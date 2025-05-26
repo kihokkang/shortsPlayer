@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, height=device-height">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Shorts 스타일 플레이어</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
@@ -159,7 +159,7 @@
     <!-- 외부 라이브러리 -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
     <script src="./js/jquery-3.3.1.min.js"></script>
-    <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
+    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/plyr/dist/plyr.min.js"></script>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
@@ -182,27 +182,6 @@
             script.src = './js/ui.js';
             document.body.appendChild(script);
         });
-
-    const closeButton = document.getElementById('closeButton');
-    const mIframe = document.getElementById('m-shorts-iframe');
-    if (closeButton) {
-        closeButton.addEventListener('click', () => {
-        // 페이지 닫기 시도 (스크립트로 연 창에서만 작동)
-        if (window.opener) {
-            window.close();
-        }else if(mIframe){ // 고객사 홈페이지에서 호출 했을 경우 닫기 버튼 동작
-            mIframe.remove();
-        }else {
-            // 일반 탭인 경우 이전 페이지로 이동
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                // 이전 페이지가 없는 경우 특정 URL로 리다이렉트
-                window.location.href = '/';
-            }
-        }
-    });
-}
     </script>
 
 </body>
