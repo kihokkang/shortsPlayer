@@ -158,12 +158,15 @@ class ShortsPlayer {
 
         // X 버튼 클릭 이벤트
         const closeButton = document.getElementById('closeButton');
+        const mIframe = document.getElementById('m-shorts-iframe');
         if (closeButton) {
             closeButton.addEventListener('click', () => {
                 // 페이지 닫기 시도 (스크립트로 연 창에서만 작동)
                 if (window.opener) {
                     window.close();
-                } else {
+                }else if(mIframe){ // 고객사 홈페이지에서 호출 했을 경우 닫기 버튼 동작
+                    mIframe.remove();
+                }else {
                     // 일반 탭인 경우 이전 페이지로 이동
                     if (window.history.length > 1) {
                         window.history.back();
