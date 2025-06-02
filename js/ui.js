@@ -472,34 +472,6 @@
     window.initializeUI = initializeUI;
 })();
 
-// iOS 키패드 처리
-document.addEventListener('DOMContentLoaded', function() {
-    const txt = document.getElementById('txt');
-    const chatbotWrap = document.getElementById('chatbotWrap');
-    
-    // 포커스 시 스크롤 처리
-    txt.addEventListener('focus', function() {
-        setTimeout(() => {
-            const rect = txt.getBoundingClientRect();
-            const scrollAmount = rect.top - (window.innerHeight - rect.height - 20);
-            if (scrollAmount > 0) {
-                window.scrollTo({
-                    top: window.scrollY + scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
-        }, 300); // 키패드가 완전히 올라온 후 스크롤
-    });
-
-    // 블러 시 스크롤 복원
-    txt.addEventListener('blur', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-});
-
 // 3. 큐브박스 (jquery)
 $(function () {
   let currentCubeIndex = 0;
