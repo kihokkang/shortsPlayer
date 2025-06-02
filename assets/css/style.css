@@ -202,6 +202,12 @@ body {
         top: 0;
         bottom: 0;
     }
+
+    #shorts-container {
+        width: 100%;
+        height: 100%;
+        max-height: -webkit-fill-available;
+    }
 }
 
 @media (max-width: 767px) {
@@ -226,6 +232,7 @@ body {
     #shorts-container {
         width: 100%;
         height: 100%;
+        max-height: -webkit-fill-available;
     }
 }
 
