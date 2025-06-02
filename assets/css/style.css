@@ -31,8 +31,8 @@ body {
 }
 
 #shorts-container {
-    width: 100%;
-    height: 100%;
+    width: 36rem;
+    height: 64rem;
     position: relative;
     overflow: hidden;
     color: white;
