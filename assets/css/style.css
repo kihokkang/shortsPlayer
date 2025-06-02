@@ -76,7 +76,18 @@ body {
 .plyr--video {
     height: 100%;
     position: relative;
-    width: 100%;
+    width: 100% !important;
+}
+
+.plyr {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.plyr video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
 }
 
 .plyr__controls {
@@ -114,10 +125,6 @@ body {
 
 /* FullScreen 모드시 원본 동영상 비율로 노출 되도록 하기 위함 */
 /* .plyr--video{height:100%} */
-
-.plyr video {
-    object-fit: contain !important;
-}
 
 .loading-spinner {position: absolute;width: 4rem;height: 4rem;border: .4rem solid rgba(255, 255, 255, 0.3);border-top: .4rem solid #fff;border-radius: 50%;animation: spin 1s linear infinite;z-index: 2;
     top: 50%;left: 50%;transform: translate(-50%, -50%);}
