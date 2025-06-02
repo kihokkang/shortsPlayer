@@ -134,11 +134,11 @@ body {
     }
     #shorts-container {
         width: 100%;
-        height: calc(100vh - 4rem); /* 여백 증가 */
+        height: calc(100vh - 8rem); /* 여백 대폭 증가 */
         max-width: 100%;
-        max-height: calc(100vh - 4rem);
-        margin-bottom: 4rem; /* 여백 증가 */
-        padding-bottom: 1rem; /* 추가 패딩 */
+        max-height: calc(100vh - 8rem);
+        margin-bottom: 8rem; /* 여백 대폭 증가 */
+        padding-bottom: 2rem; /* 패딩 증가 */
     }
 }
 
@@ -146,9 +146,9 @@ body {
 @media screen and (max-width: 480px) {
     #shorts-container {
         width: 100%;
-        height: calc(100vh - 4rem);
-        margin-bottom: 4rem;
-        padding-bottom: 1rem;
+        height: calc(100vh - 8rem);
+        margin-bottom: 8rem;
+        padding-bottom: 2rem;
     }
 }
 
@@ -156,28 +156,28 @@ body {
 @media screen and (orientation: landscape) {
     #shorts-container {
         width: 100%;
-        height: calc(100vh - 4rem);
-        margin-bottom: 4rem;
-        padding-bottom: 1rem;
+        height: calc(100vh - 8rem);
+        margin-bottom: 8rem;
+        padding-bottom: 2rem;
     }
 }
 
 /* 작은 화면 */
 @media screen and (max-height: 600px) {
     #shorts-container {
-        height: calc(100vh - 4rem);
-        margin-bottom: 4rem;
-        padding-bottom: 1rem;
+        height: calc(100vh - 8rem);
+        margin-bottom: 8rem;
+        padding-bottom: 2rem;
     }
 }
 
 /* 큰 화면 */
 @media screen and (min-height: 800px) {
     #shorts-container {
-        height: calc(80vh - 4rem);
-        max-height: calc(80vh - 4rem);
-        margin-bottom: 4rem;
-        padding-bottom: 1rem;
+        height: calc(80vh - 8rem);
+        max-height: calc(80vh - 8rem);
+        margin-bottom: 8rem;
+        padding-bottom: 2rem;
     }
 }
 
