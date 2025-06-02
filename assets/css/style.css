@@ -54,6 +54,23 @@ body {
     padding: 0;
 }
 
+/* Plyr 컨트롤러 스타일 */
+.plyr--video {
+    height: 100%;
+    position: relative;
+    width: 100%;
+}
+
+.plyr__controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    z-index: 10;
+}
+
 .video-wrapper {
     position: relative;
     width: 100%;
