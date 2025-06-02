@@ -34,28 +34,45 @@ body {
     box-sizing: border-box;
 }
 
-.swiper {width: 100%;height: 100%;}
-.swiper-slide {display: flex;justify-content: center;align-items: center;background: #000; height: 100%;position: relative;overflow: hidden;}
+.swiper {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
-/* Plyr 컨트롤러 스타일 */
-.plyr--video {
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
     height: 100%;
     position: relative;
+    overflow: hidden;
     width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-.plyr__controls {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1rem;
-    background: linear-gradient(transparent, rgba(0,0,0,0.7));
-    z-index: 10;
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 9;
+    margin: 0;
+    padding: 0;
 }
 
-.video-wrapper {position: relative;width: 100%;height: 100%;overflow: hidden;z-index: 9;}
-.video-wrapper video {width: 100%;height: 100%;object-fit: cover;transition: transform 0.5s ease-in-out;}
+.video-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease-in-out;
+    margin: 0;
+    padding: 0;
+}
+
 .video-thumbnail {position: absolute;width: 100%;height: 100%;object-fit: cover;z-index: 1;}
 .video-wrapper .video-status{position:absolute;top:50%;left:50%;width:7.2rem;height:7.2rem;transform: translate(-50%, -50%);}
 .video-wrapper .video-status.status-play{animation: btnPlay 1.1s linear forwards;background:url('../img/btn_video_play.png') no-repeat center / contain;}
@@ -156,19 +173,20 @@ body {
         height: 100dvh;
         height: -webkit-fill-available;
         width: 100%;
-        max-width: 100%;
         margin: 0;
         padding: 0;
         overflow-x: hidden;
+        position: fixed;
+        left: 0;
+        right: 0;
     }
     
     #shorts-container {
-        /* width: 100%; */
-        /* height: calc(100% - 8rem);
-        max-height: calc(100% - 8rem);
+        width: 100%;
+        height: 64rem;
         margin: 0;
         padding: 0;
-        overflow-x: hidden; */
+        overflow: hidden;
     }
 
     .plyr__controls {
@@ -176,22 +194,71 @@ body {
     }
 }
 
+/* iPhone SE */
+@media screen and (width: 375px) and (height: 667px) {
+    html, body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    
+    body {
+        position: fixed;
+        left: 0;
+        right: 0;
+    }
+    
+    #shorts-container {
+        width: 100%;
+        height: 64rem;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+        left: 0;
+        right: 0;
+    }
+
+    .swiper, .swiper-slide, .video-wrapper, .video-wrapper video {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* iOS Safari 대응 */
+@supports (-webkit-touch-callout: none) {
+    html, body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    
+    body {
+        height: -webkit-fill-available;
+        position: fixed;
+        left: 0;
+        right: 0;
+    }
+}
+
 /* iPhone 8 Plus, iPhone X, iPhone XS */
 @media screen and (width: 375px) and (height: 776px) {
     body {
-        width: 100vw;
-        padding: 0;
+        width: 100%;
         margin: 0;
+        padding: 0;
         overflow-x: hidden;
     }
     
     #shorts-container {
-        width: 100vw;
-        height: calc(100% - 8rem);
-        max-height: calc(100% - 8rem);
+        width: 100%;
+        height: 64rem;
         margin: 0;
         padding: 0;
-        overflow-x: hidden;
+        overflow: hidden;
     }
 }
 
@@ -219,29 +286,6 @@ body {
         width: 36rem;
         height: 64rem;
         max-height: 64rem;
-    }
-}
-
-/* iOS Safari 대응 */
-@supports (-webkit-touch-callout: none) {
-    body {
-        height: -webkit-fill-available;
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
-        position: fixed;
-        left: 0;
-        right: 0;
-    }
-    #shorts-container {
-        width: 100%;
-        height: calc(100% - 8rem);
-        max-height: calc(100% - 8rem);
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
     }
 }
 
