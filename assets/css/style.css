@@ -4,11 +4,19 @@
 html{font-size:62.5%;} 
 body {display: flex;justify-content: center;align-items: center;height: 100vh; background-color: #333; margin: 0;overflow: hidden;font-family:'Pretendard', 'Roboto', sans-serif;}
 
-#shorts-container {width: 36rem;height: 64rem;position: relative;overflow: hidden;color: white;    display: flex;justify-content: space-between;flex-direction: row-reverse;}
+#shorts-container {
+    width: 36rem;
+    height: 64rem;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
 
 .swiper {width: 100%;height: 100%;}
-.swiper-slide {display: flex;justify-content: center;align-items: center;background: #000;   height: 100%;position: relative;overflow: hidden;}
-
+.swiper-slide {display: flex;justify-content: center;align-items: center;background: #000; height: 100%;position: relative;overflow: hidden;}
 
 .video-wrapper {position: relative;width: 100%;height: 100%;overflow: hidden;z-index: 9;}
 .video-wrapper video {width: 100%;height: 100%;object-fit: cover;transition: transform 0.5s ease-in-out;}
@@ -72,7 +80,6 @@ body {display: flex;justify-content: center;align-items: center;height: 100vh; b
 /* 하단텍스트가 없을 경우 */
 .content-layout h1.mid-title{position:absolute;top:50%;left:0;width:100%;transform: translateY(-50%);padding:0 5rem 0 3rem;text-align: center;}
 
-
 .short-title{padding:4rem 3rem 1.6rem;font-size:2.4rem;font-weight:bold;z-index: 10;color:#fff;text-shadow: 0 .2rem .3rem rgba(0, 0, 0, 0.15);pointer-events: none;}
 .short-title.posi-bottom{top:auto;bottom:6rem;}
 .short-content{display:flex;flex-direction:column ;padding:0 3rem 3rem;font-size:1.6rem;z-index: 10;color:#fff;text-shadow: 0 .2rem .3rem rgba(0, 0, 0, 0.15);pointer-events: none;}
@@ -106,14 +113,27 @@ body {display: flex;justify-content: center;align-items: center;height: 100vh; b
     }
 }
 
-
 @media (max-width: 767px) {
     #shorts-container {
-        width:100%;
-        height:100%;
+        width: 100%;
+        height: 100vh;
+        max-height: 100vh;
     }
 }
 
+@media (max-height: 600px) {
+    #shorts-container {
+        height: 100vh;
+        max-height: 100vh;
+    }
+}
+
+@media (min-height: 800px) {
+    #shorts-container {
+        height: 80vh;
+        max-height: 80vh;
+    }
+}
 
 /* 이미지 전환 애니메이션 */
 .img-temp{position:absolute;top:0;left:0;width:100%;height:100%}
