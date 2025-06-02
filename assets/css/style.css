@@ -42,7 +42,7 @@ body {
 }
 
 .swiper {
-    width: 100%;
+    width: 100% !important;
     height: 100%;
 }
 
@@ -54,19 +54,19 @@ body {
     height: 100%;
     position: relative;
     overflow: hidden;
-    width: 100%;
+    width: 100% !important;
 }
 
 .video-wrapper {
     position: relative;
-    width: 100%;
+    width: 100% !important;
     height: 100%;
     overflow: hidden;
     z-index: 9;
 }
 
 .video-wrapper video {
-    width: 100%;
+    width: 100% !important;
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s ease-in-out;
