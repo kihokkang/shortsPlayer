@@ -35,10 +35,11 @@ body {
 }
 
 .swiper {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
 }
 
 .swiper-slide {
@@ -46,12 +47,12 @@ body {
     justify-content: center;
     align-items: center;
     background: #000;
-    height: 100%;
+    height: 100% !important;
     position: relative;
     overflow: hidden;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* Plyr 컨트롤러 스타일 */
@@ -73,21 +74,21 @@ body {
 
 .video-wrapper {
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
     overflow: hidden;
     z-index: 9;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .video-wrapper video {
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: cover;
     transition: transform 0.5s ease-in-out;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .video-thumbnail {position: absolute;width: 100%;height: 100%;object-fit: cover;z-index: 1;}
@@ -230,10 +231,10 @@ body {
     }
     
     #shorts-container {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
         overflow: hidden;
         position: relative;
         left: 0;
@@ -241,10 +242,10 @@ body {
     }
 
     .swiper, .swiper-slide, .video-wrapper, .video-wrapper video {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .plyr__controls {
