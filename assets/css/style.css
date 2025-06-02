@@ -27,7 +27,16 @@ body {
     flex-direction: row-reverse;
 }
 
-.swiper {width: 100%;height: 100%;}
+.swiper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.swiper-wrapper {
+    overflow: hidden;
+}
+
 .swiper-slide {display: flex;justify-content: center;align-items: center;background: #000;   height: 100%;position: relative;overflow: hidden;}
 
 
@@ -134,11 +143,12 @@ body {
     }
     #shorts-container {
         width: 100%;
-        height: calc(100vh - 8rem); /* 여백 대폭 증가 */
+        height: calc(100vh - 7rem);
         max-width: 100%;
-        max-height: calc(100vh - 8rem);
-        margin-bottom: 8rem; /* 여백 대폭 증가 */
-        padding-bottom: 2rem; /* 패딩 증가 */
+        max-height: calc(100vh - 7rem);
+        margin-bottom: 8rem;
+        padding-bottom: 2rem;
+        overflow: hidden;
     }
 }
 
@@ -146,9 +156,10 @@ body {
 @media screen and (max-width: 480px) {
     #shorts-container {
         width: 100%;
-        height: calc(100vh - 8rem);
-        margin-bottom: 8rem;
+        height: calc(100vh - 7rem);
+        margin-bottom: 7rem;
         padding-bottom: 1rem;
+        overflow: hidden;
     }
 }
 
@@ -156,28 +167,31 @@ body {
 @media screen and (orientation: landscape) {
     #shorts-container {
         width: 100%;
-        height: calc(100vh - 8rem);
-        margin-bottom: 8rem;
+        height: calc(100vh - 7rem);
+        margin-bottom: 7rem;
         padding-bottom: 1rem;
+        overflow: hidden;
     }
 }
 
 /* 작은 화면 */
 @media screen and (max-height: 600px) {
     #shorts-container {
-        height: calc(100vh - 8rem);
-        margin-bottom: 8rem;
+        height: calc(100vh - 7rem);
+        margin-bottom: 7rem;
         padding-bottom: 1rem;
+        overflow: hidden;
     }
 }
 
 /* 큰 화면 */
 @media screen and (min-height: 800px) {
     #shorts-container {
-        height: calc(80vh - 8rem);
-        max-height: calc(80vh - 8rem);
+        height: calc(80vh - 7rem);
+        max-height: calc(80vh - 7rem);
         margin-bottom: 8rem;
         padding-bottom: 1rem;
+        overflow: hidden;
     }
 }
 
